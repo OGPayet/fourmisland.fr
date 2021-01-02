@@ -1,5 +1,5 @@
 <template>
-  <nav class="sticky top-0 w-full bg-gray-800">
+  <nav class="sticky top-0 w-full bg-green">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
       <div class="relative flex items-center justify-between h-16">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -30,7 +30,7 @@
           <div class="flex-shrink-0 flex items-center">
             <nuxt-link to="/">
               <span class="emoji">
-                <img src="~/assets/strapi.png" class="logo" height="150" width="150" />
+                <img src="~/assets/img/logo.png" class="logo" height="90" width="90" />
               </span>
             </nuxt-link>
           </div>
@@ -47,7 +47,7 @@
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <button class="snipcart-checkout flex items-center">
             <Cart />
-            <span class="snipcart-total-price ml-3 font-semibold text-sm text-indigo-500"></span>
+            <span class="snipcart-total-price ml-3 font-semibold text-sm text-dark-blue"></span>
           </button>
         </div>
       </div>

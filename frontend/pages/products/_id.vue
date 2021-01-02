@@ -6,12 +6,12 @@
     </div>
     <div class="w-full p-5 flex flex-col justify-between">
       <div>
-        <h4 class="mt-1 font-semibold text-lg leading-tight truncate text-gray-700">{{product.title}} - ${{ product.price }}</h4>
+        <h4 class="mt-1 font-semibold text-lg leading-tight truncate text-gray-700">{{ product.nom }} - {{ product.prix }} €</h4>
         <div class="mt-1 text-gray-600">{{ product.description }}</div>
       </div>
 
-      <button v-if="product.status === 'published'" class="snipcart-add-item mt-4 bg-white border border-gray-200 d hover:shadow-lg text-gray-700 font-semibold py-2 px-4 rounded shadow" :data-item-id="product.id" :data-item-price="product.price"
-        :data-item-url="`${this.$route.fullPath}`" :data-item-description="product.description" :data-item-image="`${getStrapiMedia(product.image.formats.thumbnail.url)}`" :data-item-name="product.title" v-bind="customFields">
+      <button v-if="product.status === 'published'" class="snipcart-add-item mt-4 bg-white border border-gray-200 d hover:shadow-lg text-gray-700 font-semibold py-2 px-4 rounded shadow" :data-item-id="product.id" :data-item-price="product.prix"
+        :data-item-url="`${this.$route.fullPath}`" :data-item-description="product.description" :data-item-image="`${getStrapiMedia(product.image.formats.thumbnail.url)}`" :data-item-name="product.nom">
         Add to cart
       </button>
 
@@ -45,36 +45,13 @@ export default {
   },
   async mounted() {
     try {
-      this.product = await this.$strapi.$products.findOne(this.$route.params.id)
+      this.product = await this.$strapi.$fourmis.findOne(this.$route.params.id)
     } catch (error) {
-      this.error = error
-    }
-  },
-  computed: {
-    customFields() {
-      return this.product["Custom_field"]
-        .map(({
-          title,
-          required,
-          options
-        }) => ({
-          name: title,
-          required,
-          options
-        }))
-        .map((x, index) => Object.entries(x)
-          .map(([key, value]) => ({
-            [`data-item-custom${index + 1}-${key.toString().toLowerCase()}`]: value
-          })))
-        .reduce((acc, curr) => acc.concat(curr), [])
-        .reduce((acc, curr) => ({
-          ...acc,
-          ...curr
-        }))
+      this.error = error + ' - ' + this.$route.params.id; 
     }
   },
   methods: {
     getStrapiMedia
-  }
+  },
 }
 </script>

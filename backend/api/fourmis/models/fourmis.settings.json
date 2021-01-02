@@ -1,0 +1,120 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fourmis",
+  "info": {
+    "name": "fourmis",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nom": {
+      "type": "string"
+    },
+    "nom_latin": {
+      "type": "string"
+    },
+    "taxonomie": {
+      "type": "string"
+    },
+    "niveau_elevage": {
+      "type": "string"
+    },
+    "repartition_geographique": {
+      "type": "string"
+    },
+    "habitat": {
+      "type": "string"
+    },
+    "colonie_forme": {
+      "type": "string"
+    },
+    "taille": {
+      "type": "string"
+    },
+    "couleur": {
+      "type": "string"
+    },
+    "major": {
+      "type": "boolean"
+    },
+    "genre": {
+      "type": "enumeration",
+      "enum": [
+        "male",
+        "femelle"
+      ]
+    },
+    "nourriture": {
+      "type": "richtext"
+    },
+    "humidite_aire_de_chasse": {
+      "type": "string"
+    },
+    "humidite_nid": {
+      "type": "string"
+    },
+    "temperature_aire_de_chasse": {
+      "type": "string"
+    },
+    "temperature_nid": {
+      "type": "string"
+    },
+    "hibernation": {
+      "type": "richtext"
+    },
+    "type_de_nid": {
+      "type": "richtext"
+    },
+    "developpement": {
+      "type": "richtext"
+    },
+    "fondation": {
+      "type": "richtext"
+    },
+    "taille_de_la_colonie": {
+      "type": "string"
+    },
+    "esperance_de_vie": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "prix": {
+      "type": "decimal",
+      "required": true
+    },
+    "description_courte": {
+      "type": "richtext"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nom"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "draft",
+        "published"
+      ]
+    },
+    "ref": {
+      "type": "string"
+    }
+  }
+}

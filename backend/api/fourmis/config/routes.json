@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/fourmis",
+      "handler": "fourmis.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/fourmis/count",
+      "handler": "fourmis.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/fourmis/:id",
+      "handler": "fourmis.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/fourmis",
+      "handler": "fourmis.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/fourmis/:id",
+      "handler": "fourmis.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/fourmis/:id",
+      "handler": "fourmis.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

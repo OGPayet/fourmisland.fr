@@ -1,5 +1,5 @@
 <template>
-<div class="flex justify-center bg-gray-200">
+<div class="flex justify-center bg-light-grey">
   <div class="flex flex-col min-h-screen w-full">
     <NavBar />
     <Buttons class="mx-auto max-w-screen-lg" />

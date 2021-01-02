@@ -10,8 +10,9 @@
           <img v-lazy class="crop mx-auto" src="~/assets/img/placeholder-image.png" :data-src="`${getStrapiMedia(product.image.formats.thumbnail.url)}`">
         </div>
         <div class="pl-4 pr-4 pb-4 pt-4 rounded-lg">
-          <h4 class="mt-1 font-semibold text-base leading-tight truncate text-gray-700">{{product.title}} sticker</h4>
-          <div class="mt-1 text-sm text-gray-700">{{product.description}}</div>
+          <h4 class="mt-1 font-semibold text-base leading-tight truncate text-gray-700">{{ product.nom }}</h4>
+          <div class="mt-1 text-sm text-gray-700">{{ product.prix }} €</div>
+          <div class="mt-2 text-sm text-gray-700">{{ product.description_courte }}</div>
         </div>
       </nuxt-link>
     </div>
@@ -54,7 +55,7 @@ export default {
 
 <style>
 .crop {
-  width: 180px;
-  height: 180px;
+  width: 100%;
+  height: 100%;
 }
 </style>

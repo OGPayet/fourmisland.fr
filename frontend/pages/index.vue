@@ -8,7 +8,6 @@ import Products from "~/components/Products.vue"
 export default {
   data() {
     return {
-      products: [],
       fourmis: [],
       storeUrl: process.env.storeUrl,
       error: null
@@ -16,7 +15,6 @@ export default {
   },
   async mounted() {
     try {
-      this.products = await this.$strapi.$products.find();
       this.fourmis = await this.$strapi.$fourmis.find();
     } catch (error) {
       this.error = error;

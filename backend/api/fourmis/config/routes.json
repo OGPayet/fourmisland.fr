@@ -18,7 +18,7 @@
     },
     {
       "method": "GET",
-      "path": "/fourmis/:id",
+      "path": "/fourmis/:slug",
       "handler": "fourmis.findOne",
       "config": {
         "policies": []

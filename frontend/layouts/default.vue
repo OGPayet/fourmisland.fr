@@ -3,7 +3,7 @@
   <div class="flex flex-col min-h-screen w-full">
     <NavBar />
     <Buttons class="mx-auto max-w-screen-lg" />
-    <Nuxt class="mx-auto max-w-screen-lg flex-grow" />
+    <Nuxt class="mx-auto max-w-screen-xl flex-grow" />
     <Footer />
   </div>
   <div hidden id="snipcart" data-api-key="ODhhNWUxOGEtNTk0OC00OTQwLWJkOWMtM2M1ZmNjODU1ZDJhNjM3MzMyNzM0NjM1OTMyNjcz"></div>

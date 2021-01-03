@@ -56,7 +56,9 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vue-image-lightbox.js', mode: 'client' },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -68,22 +70,29 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+    '@aceforth/nuxt-optimized-images',
   ],
   /*
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/strapi'],
+
   strapi: {
     url: process.env.API_URL || "http://localhost:1337",
     entities: [
-      'products',
       'fourmis',
       'categories'
     ],
   },
+
   env: {
     storeUrl: process.env.STORE_URL || "http://localhost:1337"
   },
+
+  optimizedImages: {
+    optimizeImages: true
+  },
+
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/

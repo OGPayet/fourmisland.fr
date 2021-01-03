@@ -14,78 +14,104 @@
     "nom": {
       "type": "string"
     },
-    "nom_latin": {
+    "famille": {
       "type": "string"
     },
-    "taxonomie": {
+    "sous_famille": {
       "type": "string"
     },
-    "niveau_elevage": {
+    "tribu": {
       "type": "string"
     },
-    "repartition_geographique": {
+    "genre": {
       "type": "string"
     },
-    "habitat": {
+    "espece": {
       "type": "string"
     },
-    "colonie_forme": {
+    "taxonomiste_et_annee_de_description": {
+      "type": "text"
+    },
+    "noms_vernaculaires": {
+      "type": "string"
+    },
+    "synonymes_et_anciens_noms_utilises": {
+      "type": "richtext"
+    },
+    "etymologie_genre": {
+      "type": "string"
+    },
+    "etymologie_espece": {
       "type": "string"
     },
     "taille": {
       "type": "string"
     },
-    "couleur": {
-      "type": "string"
+    "morphisme": {
+      "type": "text"
     },
-    "major": {
-      "type": "boolean"
-    },
-    "genre": {
-      "type": "enumeration",
-      "enum": [
-        "male",
-        "femelle"
-      ]
-    },
-    "nourriture": {
+    "confusions_possibles": {
       "type": "richtext"
     },
-    "humidite_aire_de_chasse": {
-      "type": "string"
-    },
-    "humidite_nid": {
-      "type": "string"
-    },
-    "temperature_aire_de_chasse": {
-      "type": "string"
-    },
-    "temperature_nid": {
-      "type": "string"
-    },
-    "hibernation": {
+    "description_et_particularites_physiques": {
       "type": "richtext"
     },
-    "type_de_nid": {
+    "description_du_biotope": {
       "type": "richtext"
     },
-    "developpement": {
+    "nidification": {
+      "type": "richtext"
+    },
+    "demographie": {
+      "type": "text"
+    },
+    "particularites_comportementales": {
+      "type": "richtext"
+    },
+    "alimentation": {
+      "type": "richtext"
+    },
+    "essaimage": {
+      "type": "text"
+    },
+    "gynie": {
       "type": "richtext"
     },
     "fondation": {
       "type": "richtext"
     },
-    "taille_de_la_colonie": {
-      "type": "string"
-    },
-    "esperance_de_vie": {
-      "type": "string"
-    },
-    "description": {
+    "cycle_de_developpement": {
       "type": "richtext"
     },
-    "image": {
-      "model": "file",
+    "repartition": {
+      "type": "richtext"
+    },
+    "temperature_de_maintien": {
+      "type": "string"
+    },
+    "set_up": {
+      "type": "richtext"
+    },
+    "hygrometrie": {
+      "type": "text"
+    },
+    "diapause": {
+      "type": "richtext"
+    },
+    "alimentation_en_elevage": {
+      "type": "richtext"
+    },
+    "elevage_fondation": {
+      "type": "richtext"
+    },
+    "details_a_ajouter": {
+      "type": "richtext"
+    },
+    "difficulte_elevage": {
+      "type": "text"
+    },
+    "images": {
+      "collection": "file",
       "via": "related",
       "allowedTypes": [
         "images",
@@ -96,24 +122,26 @@
       "required": false
     },
     "prix": {
-      "type": "decimal",
-      "required": true
+      "type": "decimal"
+    },
+    "stock": {
+      "type": "integer"
     },
     "description_courte": {
-      "type": "richtext"
+      "type": "text"
+    },
+    "foreuse": {
+      "type": "enumeration",
+      "enum": [
+        "Oui",
+        "Non"
+      ]
     },
     "slug": {
       "type": "uid",
       "targetField": "nom"
     },
-    "status": {
-      "type": "enumeration",
-      "enum": [
-        "draft",
-        "published"
-      ]
-    },
-    "ref": {
+    "difficulte": {
       "type": "string"
     }
   }

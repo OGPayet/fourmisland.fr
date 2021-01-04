@@ -12,7 +12,7 @@ export default {
   //  <script src="https://cdn.snipcart.com/themes/v3.0.16/default/snipcart.js"></script>
 
   head: {
-    title: "Buy stickers with Strapi, Nuxt.js and Snipcart",
+    title: "Acheter votre colonie de fourmis - FourmisLand",
     meta: [{
         charset: 'utf-8'
       },
@@ -23,7 +23,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: "e-commerce starter using Strapi, Nuxt.js and Snipcart"
+        content: "L'élevage des fourmis n'a jamais été aussi simple qu'avec FourmisLand ! Acheter vos fourmis en ligne sur FourmisLand, c'est vous assurer de leur qualité et de leur provenance française."
       }
     ],
     link: [{
@@ -51,7 +51,10 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '~assets/css',
+    'reset-css/reset.css',
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -69,13 +72,21 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss',
+    '@nuxtjs/vuetify',
     '@aceforth/nuxt-optimized-images',
   ],
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/strapi'],
+  modules: [
+    '@nuxtjs/strapi',
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/style-resources',
+  ],
+
+  styleResources: {  
+    scss: ['./assets/css/index.scss'],  
+  },
 
   strapi: {
     url: process.env.API_URL || "http://localhost:1337",

@@ -1,19 +1,39 @@
 <template>
-<div class="flex justify-between m-6">
-  <p class="text-xs font-semibold text-gray-600">Strapi Starter Nuxt.js E-commerce</p>
-  <div class="flex">
-    <a href="https://twitter.com/strapijs" class="max-w-xs ml-4">
-      <Twitter />
-    </a>
-    <a href="https://facebook.com/strapijs" class="ml-3">
-      <Facebook />
-    </a>
-    <a href="https://github.com/strapi/strapi-starter-nuxt-e-commerce" class="ml-3">
-      <Github />
-    </a>
-  </div>
-</div>
+  <v-footer
+    dark
+    padless
+  >
+    <v-card
+      flat
+      tile
+      class="footer lighten-1 white--text text-center"
+    >
+      <v-card-text>
+        <v-btn
+          v-for="icon in icons"
+          :key="icon"
+          class="mx-4 white--text"
+          icon
+        >
+          <v-icon size="24px">
+            {{ icon }}
+          </v-icon>
+        </v-btn>
+      </v-card-text>
+
+      <v-card-text class="white--text pt-0">
+        Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+      </v-card-text>
+
+      <v-divider></v-divider>
+
+      <v-card-text class="white--text">
+        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
 </template>
+
 <script>
 import Twitter from "~/components/icons/twitter.vue";
 import Github from "~/components/icons/github.vue";

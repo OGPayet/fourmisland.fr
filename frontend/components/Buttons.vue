@@ -1,5 +1,5 @@
 <template>
-<div class="">
+<v-container class="grey lighten-5">
   <div v-if="error">
     {{ error }}
   </div>
@@ -9,9 +9,8 @@
         {{ category.name }}
       </nuxt-link>
     </div>
-
   </div>
-</div>
+</v-container>
 </template>
 
 <script>

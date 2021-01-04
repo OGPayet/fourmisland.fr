@@ -1,29 +1,44 @@
 <template>
-<div>
+<v-container class="grey lighten-5">
   <div v-if="error">
     {{ error }}
   </div>
-  <div class="m-6 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-8" v-else>
-    <div v-for="product in products" :key="product.id" class="border rounded-lg bg-gray-100 hover:shadow-lg shadow-md">
-      <nuxt-link :to="`/products/${product.slug}`">
-        <div class="rounded-t-lg bg-white pb-2">
-          <img  
-            v-lazy 
-            class="crop mx-auto" 
-            src="~/assets/img/placeholder-image.png" 
-            :data-src="`${getStrapiMedia(product.images[0].url)}`">
-        </div>
-        <div class="pl-4 pr-4 pb-4 pt-4 rounded-lg">
-          <h4 class="mt-1 font-semibold text-2xl leading-tight truncate text-gray-700">{{ product.nom }}</h4>
-          <div class="mt-2 text-lg text-gray-700"><strong>
-            {{ product.prix }} € - <span :class="isInStock(product) ? 'text-green' : 'text-red-700'">{{ isInStock(product) ? 'Disponible' : 'Indisponible' }}</span>
-          </strong></div>
-          <div class="mt-2 text-sm text-gray-700">{{ product.description_courte }}</div>
-        </div>
-      </nuxt-link>
-    </div>
-  </div>
-</div>
+  <v-row v-else no-gutters>
+    <v-col
+      v-for="product in products"
+      :key="product.id"
+      cols="12"
+      sm="4"
+    >
+      <v-card
+        class="mx-auto"
+        max-width="344"
+      >
+        <nuxt-link :to="`/products/${product.slug}`">
+          <v-img
+            :src="`${getStrapiMedia(product.images[0].url)}`"
+            height="250px"
+          ></v-img>
+
+          <v-card-title>
+            {{ product.nom }}
+          </v-card-title>
+
+          <v-card-subtitle>
+            {{ product.prix }} € - 
+            <span :class="isInStock(product) ? 'text-green' : 'text-red'">
+              {{ isInStock(product) ? 'Disponible' : 'Indisponible' }}
+            </span>
+          </v-card-subtitle>
+
+          <v-card-subtitle class="product-subtitle">
+            {{ product.description_courte.slice(0, 90) }}<span v-if="product.description_courte.length > 90">...</span>
+          </v-card-subtitle>
+        </nuxt-link>
+      </v-card>
+    </v-col>
+  </v-row>
+</v-container>
 </template>
 
 <script>

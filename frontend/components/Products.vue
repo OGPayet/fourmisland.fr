@@ -1,5 +1,5 @@
 <template>
-<v-container class="grey lighten-5">
+<v-container class="product-container mt-5 mb-14">
   <div v-if="error">
     {{ error }}
   </div>
@@ -13,13 +13,33 @@
       <v-card
         class="mx-auto"
         max-width="344"
+        raised
+        hover
+        ripple
+        rounded
       >
+          <v-carousel
+            :continuous="true"
+            :cycle="false"
+            :show-arrows="true"
+            hide-delimiter-background
+            hide-delimiters
+            height="250"
+          >
+            <v-carousel-item
+              v-for="(image, index) in product.images"
+              :key="index"
+            >
+              <nuxt-link :to="`/products/${product.slug}`">
+                <v-img
+                  :src="`${getStrapiMedia(image.url)}`"
+                  height="250px"
+                ></v-img>
+              </nuxt-link>
+            </v-carousel-item>
+          </v-carousel>
+        
         <nuxt-link :to="`/products/${product.slug}`">
-          <v-img
-            :src="`${getStrapiMedia(product.images[0].url)}`"
-            height="250px"
-          ></v-img>
-
           <v-card-title>
             {{ product.nom }}
           </v-card-title>

@@ -9,10 +9,40 @@ a {
 .text-red {
     color: red;
 }
+.v-tabs-slider-wrapper {
+    margin-left: 100px;
+}
+.v-tab {
+    margin-left: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.outline-black {
+    outline: gray solid;
+}
+
+// NavBar
+.nav-bar-container {
+    max-width: 100% !important;
+}
 
 // Product
+.product-container {
+    background-color: #e8eae6 !important;
+    max-width: 1300px !important;
+}
 .product-subtitle {
     padding-top: 0 !important;
+}
+.product-container  .v-tab {
+    margin-left: 0 !important;
+}
+.product-container  .v-item-group {
+    width: 100%;
+}
+.product-container .v-data-table {
+    background-color: #cdd0cb !important;
 }
 
 // Footer

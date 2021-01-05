@@ -6,6 +6,7 @@
       id="scrolling-techniques-3"
       class="overflow-y-auto"
       :max-height="screenHeight"
+      width="100%"
     >
       <v-container style="height: 250px;"></v-container>
       <v-main>

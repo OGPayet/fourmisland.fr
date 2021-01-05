@@ -143,6 +143,9 @@
     },
     "difficulte": {
       "type": "string"
+    },
+    "espece_cryptique": {
+      "type": "text"
     }
   }
 }

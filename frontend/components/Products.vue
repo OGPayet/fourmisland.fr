@@ -1,5 +1,5 @@
 <template>
-<v-container class="product-container mt-5 mb-14">
+<v-container class="product-container mt-5 mb-16">
   <div v-if="error">
     {{ error }}
   </div>
@@ -7,6 +7,7 @@
     <v-col
       v-for="product in products"
       :key="product.id"
+      class="mt-12"
       cols="12"
       sm="4"
     >
@@ -15,7 +16,6 @@
         max-width="344"
         raised
         hover
-        ripple
         rounded
       >
           <v-carousel

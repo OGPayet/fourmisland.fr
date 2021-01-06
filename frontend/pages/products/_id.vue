@@ -12,7 +12,8 @@
                 : 'mb-5 cursor-pointer'
             "
             :src="`${getStrapiMedia(image.formats.thumbnail.url)}`"
-            width="90%"
+            width="85%"
+            height="50px"
             @click="
               idImageActive = image.id;
               selectedImage = image;
@@ -33,9 +34,19 @@
         </v-col>
 
         <v-col>
-          <h3 class="text-4xl leading-6 font-medium text-gray-900">
+          <h3 class="product-page-title">
             {{ this.product.nom }}
           </h3>
+          <h4 class="product-page-price"> 
+            {{ product.prix.toPrecision(4) }} € -
+            <span v-if="product.stock > 0" class="product-page-stock">
+              Stock : {{ this.product.stock }}
+            </span>
+            <span v-else class="product-page-indisponible">
+              <strong> Indisponible </strong>
+            </span>
+          </h4>
+          <v-divider></v-divider>
           <p class="mt-5 text-lg text-gray-700">
             {{ this.product.description_courte }}
           </p>
@@ -51,17 +62,6 @@
             >
               {{ this.product.difficulte }}
             </span>
-          </p>
-          <h4
-            class="mt-4 font-semibold text-3xl leading-tight truncate text-gray-700"
-          >
-            {{ product.prix }} €
-          </h4>
-          <p v-if="product.stock > 0" class="mt-2">
-            Stock : {{ this.product.stock }}
-          </p>
-          <p v-else class="mt-2 text-2xl text-red-700">
-            <strong> Indisponible </strong>
           </p>
           <button
             v-if="product.stock > 0"

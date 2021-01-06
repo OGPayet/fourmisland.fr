@@ -21,6 +21,12 @@ a {
 .outline-black {
     outline: gray solid;
 }
+.v-window__prev {
+    z-index: 0 !important;
+}
+.v-window__next {
+    z-index: 0 !important;
+}
 
 // NavBar
 .nav-bar-container {
@@ -43,6 +49,19 @@ a {
 }
 .product-container .v-data-table {
     background-color: #cdd0cb !important;
+}
+
+// Product page
+.product-page-title {
+    font-size: 44px;
+}
+.product-page-price {
+    font-size: 34px;
+    color: #7c9473;
+}
+.product-page-indisponible {
+    font-size: 25px;
+    color: red;
 }
 
 // Footer

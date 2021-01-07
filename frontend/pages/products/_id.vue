@@ -57,10 +57,10 @@
                 product.difficulte == 'Facile' ||
                 product.difficulte == 'Assez facile'
                   ? 'text-green'
-                  : ''
+                  : 'text-red'
               "
             >
-              {{ this.product.difficulte }}
+              <strong>{{ this.product.difficulte }}</strong>
             </span>
           </p>
           <button

@@ -10,7 +10,6 @@
     >
       <v-container style="height: 250px;"></v-container>
       <v-main>
-        <Buttons />
         <Nuxt />
       </v-main>
 
@@ -26,14 +25,12 @@
 import NuxtSSRScreenSize from 'nuxt-ssr-screen-size'
 import NavBar from './../components/Navbar'
 import Footer from './../components/Footer'
-import Buttons from './../components/Buttons'
 
 export default {
   mixins: [NuxtSSRScreenSize.NuxtSSRScreenSizeMixin],
   components: {
     NavBar,
     Footer,
-    Buttons
   },
   computed: {
     screenHeight() {

@@ -6,7 +6,22 @@
   <ProductsHeader v-if="!error" />
   <v-card class="mx-auto mt-5 mb-16" max-width="1300px" outlined>
   <v-container v-if="!error" class="product-container">
-    <v-row no-gutters>
+    <v-row v-if="isDataLoaded == false" no-gutters>
+      <v-col 
+        v-for="n in 9"
+        :key="n"
+        class="mt-12"
+        cols="12"
+        sm="4"
+      >
+        <v-skeleton-loader
+          class="mx-auto"
+          max-width="344"
+          type="image, article"
+        ></v-skeleton-loader>
+      </v-col>
+    </v-row>
+    <v-row v-else no-gutters>
       <v-col
         v-for="product in products"
         :key="product.id"
@@ -77,23 +92,7 @@ export default {
   props: {
     products: Array,
     error: Object,
-    storeUrl: String
-  },
-  directives: {
-    lazy: {
-      inserted: (el) => {
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              let lazyImage = entry.target;
-              lazyImage.src = lazyImage.dataset.src;
-              observer.unobserve(el);
-            }
-          });
-        });
-        observer.observe(el);
-      },
-    },
+    isDataLoaded: Boolean,
   },
   methods: {
     getStrapiMedia,

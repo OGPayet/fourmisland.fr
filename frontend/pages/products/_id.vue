@@ -63,8 +63,16 @@
               <strong>{{ this.product.difficulte }}</strong>
             </span>
           </p>
+          <vue-numeric-input
+            class="quantity-input mr-2"
+            v-model="itemQuantity"
+            :min="0"
+            :max="10"
+            size="60px"
+            controls-type="updown">
+          </vue-numeric-input>
           <button
-            v-if="product.stock > 0"
+            v-if="product.stock > 0 && useSnipcart == true"
             class="snipcart-add-item inline-block mt-4 bg-light-green border border-light-green d hover:shadow-lg text-lg text-gray-800 font-bold py-4 px-8 rounded shadow"
             :data-item-id="product.id"
             :data-item-price="product.prix"
@@ -88,6 +96,21 @@
             </svg>
             Ajouter au panier
           </button>
+          <v-btn
+            color="#7c9473"
+            class="add-in-cart-button white--text"
+            x-large
+            @click="addInCart()"
+          >
+            <v-icon
+              right
+              dark
+              class="mr-2"
+            >
+              mdi-cart
+            </v-icon>
+            Ajouter au panier
+          </v-btn>
         </v-col>
         <client-only>
           <light-box
@@ -172,6 +195,8 @@ export default {
         { title: "BIOLOGIE", indexStart: 14, indexEnd: 23 },
         { title: "ÉLEVAGE", indexStart: 24, indexEnd: 35},
       ],
+      useSnipcart: false,
+      quantity: 1,
     };
   },
   async mounted() {
@@ -184,6 +209,14 @@ export default {
     }
   },
   computed: {
+    itemQuantity: {
+      get() {
+        return this.quantity;
+      },
+      set(value) {
+        this.quantity = value;
+      }
+    },
     media: {
       get() {
         return this.mediaList;
@@ -230,6 +263,33 @@ export default {
   },
   methods: {
     getStrapiMedia,
+    addInCart() {
+      let filteredCart = this.$store.state.cartItems.filter(element => {
+        return element.slug == this.product.slug;
+      });
+      let index = this.$store.state.cartItems.indexOf(filteredCart[0]);
+
+      console.info(filteredCart.length);
+
+      console.info(filteredCart);
+
+      console.info(this.itemQuantity);
+
+      let item = {
+        slug: this.product.slug,
+        quantity: this.itemQuantity
+      };
+
+      if (filteredCart.length > 0) {
+        this.$store.commit('addCartItemNumber', this.itemQuantity);
+        this.$store.commit('incrementCartItemQuantity', index, this.itemQuantity)
+      } else {
+        this.$store.commit('addCartItemNumber', this.itemQuantity);
+        this.$store.commit('addCartItem', item);
+      }
+
+      console.info(this.$store.state.cartItems);
+    }
   },
 };
 </script>

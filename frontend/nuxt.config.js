@@ -61,6 +61,8 @@ export default {
    */
   plugins: [
     { src: '~/plugins/vue-image-lightbox.js', mode: 'client' },
+    '~/plugins/vue-numeric-input.js',
+    { src: '~/plugins/vuex-persistedstate.js', mode: 'client' },
   ],
   /*
    ** Auto import components

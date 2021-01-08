@@ -31,6 +31,7 @@
 
         <v-col cols="5">
           <v-text-field
+            v-model="searchInput"
             solo
             light
             label="Rechercher"
@@ -41,17 +42,24 @@
         </v-col>
 
         <v-col>
-          <v-btn class="float-right" icon>
-            <v-icon
-              large
-              color="#e8eae6"
+          <v-btn class="float-right" icon @click="cartDialog = true">
+            <v-badge
+              color="blue"
+              :content="cartItemNumber"
             >
-              mdi-cart
-            </v-icon>
+              <v-icon
+                large
+                color="#e8eae6"
+              >
+                 mdi-cart
+              </v-icon>
+            </v-badge>
           </v-btn>
         </v-col>
       </v-row>
     </v-container>
+
+    <Cart :dialog="cartDialog" @onClose="cartDialog = false" />
 
     <template v-slot:extension>
       <v-tabs align-with-title>
@@ -65,17 +73,44 @@
 </template>
 
 <script>
-import Cart from "./icons/cart.vue";
+import Cart from "./Cart";
 
 export default {
   components: {
     Cart,
   },
+  data() {
+    return {
+      searchValue: null,
+      isCartDialogOpen: false,
+    }
+  },
+  computed: {
+    cartDialog: {
+      get() {
+        return this.isCartDialogOpen;
+      },
+      set(value) {
+        this.isCartDialogOpen = value;
+      }
+    },
+    cartItemNumber() {
+      return this.$store.state.cartItemNumber;
+    },
+    searchInput: {
+      get() {
+        return this.searchValue;
+      },
+      set(value) {
+        this.searchValue = value;
+        let filteredProducts = this.$store.state.products.filter(element => {
+          let name = element.nom.toLowerCase().split(' ');
+          let searchValue = this.searchValue.toLowerCase().split(' ');
+          return name.some(r => searchValue.includes(r));
+        });
+        this.$store.commit('setFilteredProducts', filteredProducts);
+      }
+    },
+  },
 };
 </script>
-
-<style>
-.emoji {
-  font-size: 30px;
-}
-</style>

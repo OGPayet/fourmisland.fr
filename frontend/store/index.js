@@ -3,6 +3,7 @@ export const state = () => ({
     cartItems: [],
     products: [],
     filteredProducts: [],
+    isPaypalButtonLoaded: false,
 })
   
 export const mutations = {
@@ -35,7 +36,10 @@ export const mutations = {
     },
     setFilteredProducts(state, filteredProducts) {
         state.filteredProducts = filteredProducts;
-    }
+    },
+    isPaypalButtonLoaded(state, value) {
+        state.isPaypalButtonLoaded = value;
+    },
 }
 
 export const actions = {

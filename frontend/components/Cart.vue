@@ -84,8 +84,13 @@ export default {
   },
   watch: {
     dialog(visible) {
-      if (visible && !this.isCartEmpty) {
+      if (!(this.$store.state.cartItems.length > 0) && this.$store.state.isPaypalButtonLoaded) {
+        this.$store.commit('isPaypalButtonLoaded', false);
+      }
+
+      if (visible && !this.isCartEmpty && !this.$store.state.isPaypalButtonLoaded) {
         this.$refs.paypal.addEventListener('load', this.loadPaypalButton());
+        this.$store.commit('isPaypalButtonLoaded', true);
       }
     }
   },

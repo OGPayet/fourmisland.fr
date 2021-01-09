@@ -12,8 +12,13 @@ export const mutations = {
     addCartItem(state, item) {
         state.cartItems.push(item);
     },
-    incrementCartItemQuantity(state, index, quantity) {
-        state.cartItems[index].quantity += quantity;
+    incrementCartItemQuantity(state, index) {
+        state.cartItems[index].quantity++;
+        state.cartItemNumber++;
+    },
+    decrementCartItemQuantity(state, index) {
+        state.cartItems[index].quantity--;
+        state.cartItemNumber--;
     },
     setProducts(state, products) {
         state.products = products;

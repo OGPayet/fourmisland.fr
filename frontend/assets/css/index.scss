@@ -98,6 +98,21 @@ a {
     background-color: rgba(124, 148, 115, 0.7);
 }
 
+// Cart
+.cart-list-item-title {
+    font-size: 25px !important;
+}
+.cart-list-item-price {
+    font-size: 22px !important;
+    margin-right: 20%;
+}
+.cart-list-item-quantity {
+    font-size: 20px !important;
+}
+.v-list-item__subtitle {
+    margin-top: -25px;
+}
+
 // Footer
 .footer {
     background-color: #7c9473 !important;

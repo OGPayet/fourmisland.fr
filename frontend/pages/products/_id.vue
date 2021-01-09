@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { getStrapiMedia } from "~/utils/medias";
+import { getStrapiMedia } from "~/utils/medias"
 
 export default {
   data() {
@@ -214,7 +214,7 @@ export default {
         return this.quantity;
       },
       set(value) {
-        this.quantity = value;
+        this.quantity = Number(value);
       }
     },
     media: {
@@ -267,22 +267,21 @@ export default {
       let filteredCart = this.$store.state.cartItems.filter(element => {
         return element.slug == this.product.slug;
       });
-      let index = this.$store.state.cartItems.indexOf(filteredCart[0]);
-
-      console.info(filteredCart.length);
-
-      console.info(filteredCart);
-
-      console.info(this.itemQuantity);
 
       let item = {
         slug: this.product.slug,
-        quantity: this.itemQuantity
+        name: this.product.nom,
+        price: this.product.prix,
+        quantity: this.itemQuantity,
+        imageUrl: this.product.images[0].url
       };
 
       if (filteredCart.length > 0) {
-        this.$store.commit('addCartItemNumber', this.itemQuantity);
-        this.$store.commit('incrementCartItemQuantity', index, this.itemQuantity)
+        let index = this.$store.state.cartItems.indexOf(filteredCart[0]);
+
+        for (let i = 0; i < this.itemQuantity; i++) {
+          this.$store.commit('incrementCartItemQuantity', index);
+        }
       } else {
         this.$store.commit('addCartItemNumber', this.itemQuantity);
         this.$store.commit('addCartItem', item);

@@ -38,12 +38,12 @@
             {{ this.product.nom }}
           </h3>
           <h4 class="product-page-price"> 
-            {{ product.prix.toPrecision(4) }} € -
+            {{ product.prix.toPrecision(4) }} €
             <span v-if="product.stock > 0" class="product-page-stock">
-              Stock : {{ this.product.stock }}
+              - Stock : {{ this.product.stock }}
             </span>
             <span v-else class="product-page-indisponible">
-              <strong> Indisponible </strong>
+              -<strong> Indisponible </strong>
             </span>
           </h4>
           <v-divider></v-divider>
@@ -55,7 +55,8 @@
             <span
               :class="
                 product.difficulte == 'Facile' ||
-                product.difficulte == 'Assez facile'
+                product.difficulte == 'Assez facile' ||
+                product.difficulte == 'Très facile'
                   ? 'text-green'
                   : 'text-red'
               "
@@ -63,54 +64,31 @@
               <strong>{{ this.product.difficulte }}</strong>
             </span>
           </p>
-          <vue-numeric-input
-            class="quantity-input mr-2"
-            v-model="itemQuantity"
-            :min="0"
-            :max="10"
-            size="60px"
-            controls-type="updown">
-          </vue-numeric-input>
-          <button
-            v-if="product.stock > 0 && useSnipcart == true"
-            class="snipcart-add-item inline-block mt-4 bg-light-green border border-light-green d hover:shadow-lg text-lg text-gray-800 font-bold py-4 px-8 rounded shadow"
-            :data-item-id="product.id"
-            :data-item-price="product.prix"
-            :data-item-url="`${this.$route.fullPath}`"
-            :data-item-description="product.description"
-            :data-item-image="`${getStrapiMedia(
-              product.images[0].formats.thumbnail.url
-            )}`"
-            :data-item-name="product.nom"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              width="22"
-              class="inline-block mr-2"
+          <div v-if="this.product.stock > 0">
+            <vue-numeric-input
+              class="quantity-input mr-2"
+              v-model="itemQuantity"
+              :min="1"
+              :max="product.stock"
+              size="60px"
+              controls-type="updown">
+            </vue-numeric-input>
+            <v-btn
+              color="#7c9473"
+              class="add-in-cart-button white--text"
+              x-large
+              @click="!isNaN(itemQuantity) ? addInCart() : ''"
             >
-              <path
-                d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"
-              />
-            </svg>
-            Ajouter au panier
-          </button>
-          <v-btn
-            color="#7c9473"
-            class="add-in-cart-button white--text"
-            x-large
-            @click="addInCart()"
-          >
-            <v-icon
-              right
-              dark
-              class="mr-2"
-            >
-              mdi-cart
-            </v-icon>
-            Ajouter au panier
-          </v-btn>
+              <v-icon
+                right
+                dark
+                class="mr-2"
+              >
+                mdi-cart
+              </v-icon>
+              Ajouter au panier
+            </v-btn>
+          </div>
         </v-col>
         <client-only>
           <light-box
@@ -141,14 +119,12 @@
           >
             <v-simple-table>
               <template v-slot:default>
-                <tbody>
-                  <tr
-                    v-for="(value, name, index) in productInfos"
-                    :key="index"
-                    v-if="index >= productInfosTitle.indexStart && index <= productInfosTitle.indexEnd"
-                  >
-                    <td>{{ name }}</td>
-                    <td>{{ value }}</td>
+                <tbody 
+                  v-for="(value, name, index) in productInfos"
+                  :key="index">
+                <tr v-if="index >= productInfosTitle.indexStart && index <= productInfosTitle.indexEnd" class="product-info-tr">
+                    <td class="product-infos-name">{{ name }} :</td>
+                    <td class="product-infos-value">{{ value }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -195,7 +171,6 @@ export default {
         { title: "BIOLOGIE", indexStart: 14, indexEnd: 23 },
         { title: "ÉLEVAGE", indexStart: 24, indexEnd: 35},
       ],
-      useSnipcart: false,
       quantity: 1,
     };
   },
@@ -280,11 +255,13 @@ export default {
         let index = this.$store.state.cartItems.indexOf(filteredCart[0]);
 
         for (let i = 0; i < this.itemQuantity; i++) {
-          this.$store.commit('incrementCartItemQuantity', index);
+          this.$store.dispatch('incrementProductInCartQuantity', index);
         }
       } else {
-        this.$store.commit('addCartItemNumber', this.itemQuantity);
-        this.$store.commit('addCartItem', item);
+        for (let i = 0; i < this.itemQuantity; i++) {
+          this.$store.commit('incrementTotalNumberProductsInCart');
+        }
+        this.$store.commit('addProductInCart', item);
       }
 
       console.info(this.$store.state.cartItems);

@@ -6,24 +6,29 @@ export const state = () => ({
 })
   
 export const mutations = {
-    addCartItemNumber(state, number) {
-        state.cartItemNumber += number;
-    },
-    addCartItem(state, item) {
-        state.cartItems.push(item);
-    },
-    incrementCartItemQuantity(state, index) {
-        state.cartItems[index].quantity++;
+    incrementTotalNumberProductsInCart(state) {
         state.cartItemNumber++;
     },
-    decrementCartItemQuantity(state, index) {
-        if (state.cartItems[index].quantity-- == 0) {
-            state.cartItems.slice(index);
+    decrementTotalNumberProductsInCart(state) {
+        if (state.cartItemNumber > 0) {
+            state.cartItemNumber--;
+        }
+    },
+    incrementInCartProduct(state, index) {
+        state.cartItems[index].quantity++;
+    },
+    decrementInCartProduct(state, index) {
+        if ((state.cartItems[index].quantity - 1) <= 0) {
+            state.cartItems.splice(index, 1);
         } else {
             state.cartItems[index].quantity--;
         }
-
-        state.cartItemNumber--;
+    },
+    removeProductFromCart(state, index) {
+        state.cartItems.slice(index);
+    },
+    addProductInCart(state, product) {
+        state.cartItems.push(product);
     },
     setProducts(state, products) {
         state.products = products;
@@ -32,4 +37,14 @@ export const mutations = {
         state.filteredProducts = filteredProducts;
     }
 }
-  
+
+export const actions = {
+    incrementProductInCartQuantity({ commit }, index) {
+        commit('incrementInCartProduct', index);
+        commit('incrementTotalNumberProductsInCart');
+    },
+    decrementProductInCartQuantity({ commit }, index) {
+        commit('decrementInCartProduct', index);
+        commit('decrementTotalNumberProductsInCart');
+    },
+}

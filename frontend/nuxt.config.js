@@ -9,8 +9,6 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
 
-  //  <script src="https://cdn.snipcart.com/themes/v3.0.16/default/snipcart.js"></script>
-
   head: {
     title: "Acheter votre colonie de fourmis - FourmisLand",
     meta: [{
@@ -24,29 +22,18 @@ export default {
         hid: 'description',
         name: 'description',
         content: "L'élevage des fourmis n'a jamais été aussi simple qu'avec FourmisLand ! Acheter vos fourmis en ligne sur FourmisLand, c'est vous assurer de leur qualité et de leur provenance française."
-      }
+      },
     ],
-    link: [{
-        rel: 'preconnect',
-        href: "https://app.snipcart.com"
-      },
-      {
-        rel: 'preconnect',
-        href: "https://cdn.snipcart.com"
-      },
-      {
-        rel: 'stylesheet',
-        href: "https://cdn.snipcart.com/themes/v3.0.16/default/snipcart.css"
-      },
+    link: [
       {
         rel: 'icon',
         type: 'image/x-icon',
         href: '/favicon.ico'
-      }
+      },
     ],
-    script: [{
-      src: 'https://cdn.snipcart.com/themes/v3.0.16/default/snipcart.js'
-    }]
+    script: [
+      { src: 'https://www.paypal.com/sdk/js?client-id=AVa3-CT9E7DbWV9LbdelsT0Mn_sw21l2lZJ6dMZ_Z6vF6RsAuuhOmpMbN_bSU4-f-tyF7kuFp6Pojr75&currency=EUR' },
+    ] 
   },
   /*
    ** Global CSS
@@ -84,7 +71,19 @@ export default {
     '@nuxtjs/strapi',
     'bootstrap-vue/nuxt',
     '@nuxtjs/style-resources',
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy',
   ],
+
+  proxy: {
+    '/paypal': {
+      target: 'https://www.paypal.com/sdk/js?client-id=AVa3-CT9E7DbWV9LbdelsT0Mn_sw21l2lZJ6dMZ_Z6vF6RsAuuhOmpMbN_bSU4-f-tyF7kuFp6Pojr75',
+      pathRewrite: {
+        '^/paypal' : '/'
+      },
+      changeOrigin: true
+    }
+  },
 
   styleResources: {  
     scss: ['./assets/css/index.scss'],  

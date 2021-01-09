@@ -64,7 +64,7 @@
 
             <v-card-subtitle class="products-card-subtitle">
               <span class="products-price"><strong>{{ product.prix }} €</strong></span> -
-              <span :class="isInStock(product) ? 'text-green products-availability' : 'text-red products-availability'">
+              <span :class="isInStock(product) ? 'text-white green lighten-2 p-1 products-availability' : 'text-white red lighten-2 p-1 products-availability'">
                 {{ isInStock(product) ? 'Disponible' : 'Indisponible' }}
               </span>
             </v-card-subtitle>

@@ -12,6 +12,7 @@
                 <v-card-text>
                     <v-list three-line>
                         <template v-for="(cartItem, index) in cartItems">
+                            <v-card class="mb-5" outlined :key="index">
                             <v-list-item :key="index">
                                 <v-list-item-avatar size="120">
                                     <v-img :src="`${getStrapiMedia(cartItem.imageUrl)}`"></v-img>
@@ -33,8 +34,9 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
+                            </v-card>
 
-                            <v-divider v-if="cartItems.length > 1 && index != (cartItems.length - 1)" :key="index"></v-divider>
+                            <v-divider v-if="cartItems.length > 100 && index != (cartItems.length - 1)" :key="index"></v-divider>
                         </template>
                     </v-list>
                 </v-card-text>

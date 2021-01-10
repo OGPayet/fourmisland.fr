@@ -4,6 +4,8 @@ export const state = () => ({
     products: [],
     filteredProducts: [],
     isPaypalButtonLoaded: false,
+    isTransactionCompleted: false,
+    payer: {},
 })
   
 export const mutations = {
@@ -28,6 +30,10 @@ export const mutations = {
     removeProductFromCart(state, index) {
         state.cartItems.slice(index);
     },
+    clearCart(state) {
+        state.cartItems = [];
+        state.cartItemNumber = 0;
+    },
     addProductInCart(state, product) {
         state.cartItems.push(product);
     },
@@ -40,6 +46,12 @@ export const mutations = {
     isPaypalButtonLoaded(state, value) {
         state.isPaypalButtonLoaded = value;
     },
+    isTransactionCompleted(state, value) {
+        state.isTransactionCompleted = value;
+    },
+    setPayer(state, payer) {
+        state.payer = payer;
+    },
 }
 
 export const actions = {
@@ -50,5 +62,10 @@ export const actions = {
     decrementProductInCartQuantity({ commit }, index) {
         commit('decrementInCartProduct', index);
         commit('decrementTotalNumberProductsInCart');
+    },
+    transactionCompleted({ commit }, payer) {
+        commit('setPayer', payer);
+        commit('clearCart');
+        commit('isTransactionCompleted', true);
     },
 }

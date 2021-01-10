@@ -85,7 +85,15 @@ export default {
       isCartDialogOpen: false,
     }
   },
+  watch: {
+    isTransactionCompleted: function() {
+      this.isTransactionCompleted ? this.cartDialog = false : '';
+    },
+  },
   computed: {
+    isTransactionCompleted() {
+      return this.$store.state.isTransactionCompleted;
+    },
     cartDialog: {
       get() {
         return this.isCartDialogOpen;

@@ -34,9 +34,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.emoji {
-  font-size: 30px;
-}
-</style>

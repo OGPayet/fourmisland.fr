@@ -90,7 +90,6 @@ export default {
 
       if (visible && !this.isCartEmpty && !this.$store.state.isPaypalButtonLoaded) {
         this.$refs.paypal.addEventListener('load', this.loadPaypalButton());
-        this.$store.commit('isPaypalButtonLoaded', true);
       }
     }
   },
@@ -132,7 +131,7 @@ export default {
                 return actions.order.create({
                     purchase_units: [
                         {
-                            description: 'test',
+                            description: 'Commande FourmisLand.com',
                             amount: {
                                 currency_code: 'EUR',
                                 value: this.cartTotalPrice
@@ -140,9 +139,24 @@ export default {
                         }
                     ]
                 });
+            },
+            onApprove: async (data, actions) => {
+                // This function captures the funds from the transaction.
+                return actions.order.capture().then(async (details) => {
+                    // This function shows a transaction success message to your buyer.
+                    this.$store.state.cartItems.forEach(async product => {
+                        await this.$strapi.update('fourmis', product.id, { stock: product.actualStock - product.quantity }); 
+                    });
+                    this.$router.push('/');
+                    this.$store.dispatch('transactionCompleted', details.payer);
+                    console.info(details);
+                    console.info(this.$store.state.payer);
+                });
             }
         }).render(this.$refs.paypal);
+
+        this.$store.commit('isPaypalButtonLoaded', true);
     },
-  }
+  },
 };
 </script>

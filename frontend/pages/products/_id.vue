@@ -244,10 +244,12 @@ export default {
       });
 
       let item = {
+        id: this.product.id,
         slug: this.product.slug,
         name: this.product.nom,
         price: this.product.prix,
         quantity: this.itemQuantity,
+        actualStock: this.product.stock,
         imageUrl: this.product.images[0].url
       };
 
@@ -263,8 +265,6 @@ export default {
         }
         this.$store.commit('addProductInCart', item);
       }
-
-      console.info(this.$store.state.cartItems);
     }
   },
 };

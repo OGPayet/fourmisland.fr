@@ -11,6 +11,9 @@
       <v-container style="height: 250px;"></v-container>
       <v-main>
         <Nuxt />
+        <TransactionCompletedDialog 
+          :dialog="showTransactionCompletedDialog" 
+          @onClose="showTransactionCompletedDialog = false" />
       </v-main>
 
       <Footer />
@@ -24,16 +27,29 @@
 import NuxtSSRScreenSize from 'nuxt-ssr-screen-size'
 import NavBar from './../components/Navbar'
 import Footer from './../components/Footer'
+import transactionCompletedDialog from './../components/transactionCompletedDialog'
 
 export default {
   mixins: [NuxtSSRScreenSize.NuxtSSRScreenSizeMixin],
   components: {
     NavBar,
     Footer,
+    transactionCompletedDialog,
+  },
+  data() {
+    return {};
   },
   computed: {
     screenHeight() {
       return this.$vssHeight;
+    },
+    showTransactionCompletedDialog: {
+      get() {
+        return this.$store.state.isTransactionCompleted;
+      },
+      set(value) {
+        this.$store.commit('isTransactionCompleted', value);
+      } 
     }
   }
 }

@@ -50,9 +50,8 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-
+                    
                     <div v-if="!isCartEmpty" id="paypal-buttons" class="mr-16" ref="paypal"></div>
-
                     <v-btn
                         class="cart-return-button"
                         color="#7c9473"

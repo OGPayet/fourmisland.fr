@@ -45,6 +45,7 @@
           <v-btn class="float-right" icon @click="cartDialog = true">
             <v-badge
               color="blue"
+              :dot="cartItemNumber > 0 ? false : true"
               :content="cartItemNumber"
             >
               <v-icon
@@ -56,9 +57,42 @@
             </v-badge>
           </v-btn>
         </v-col>
+        <v-col>
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="float-right" icon v-bind="attrs" v-on="on">
+                <v-icon
+                  large
+                  color="#e8eae6"
+                >
+                    mdi-account
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list class="mt-2">
+              <v-list-item link @click="loginDialog = true">
+                <v-list-item-title>
+                  <v-icon class="mr-1">
+                    mdi-login-variant
+                  </v-icon>
+                  Se connecter
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title>
+                  <v-icon class="mr-1">
+                    mdi-account-plus
+                  </v-icon>
+                  Créer un compte
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
       </v-row>
     </v-container>
 
+    <LoginDialog :dialog="loginDialog" @onClose="loginDialog = false" />
     <Cart :dialog="cartDialog" @onClose="cartDialog = false" />
 
     <template v-slot:extension>
@@ -73,16 +107,19 @@
 </template>
 
 <script>
-import Cart from "./Cart";
+import Cart from "./Cart"
+import LoginDialog from "./LoginDialog"
 
 export default {
   components: {
     Cart,
+    LoginDialog,
   },
   data() {
     return {
       searchValue: null,
       isCartDialogOpen: false,
+      isLoginDialogOpen: false,
     }
   },
   watch: {
@@ -93,6 +130,14 @@ export default {
   computed: {
     isTransactionCompleted() {
       return this.$store.state.isTransactionCompleted;
+    },
+    loginDialog: {
+      get() {
+        return this.isLoginDialogOpen;
+      },
+      set(value) {
+        this.isLoginDialogOpen = value;
+      }
     },
     cartDialog: {
       get() {

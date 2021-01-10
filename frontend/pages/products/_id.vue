@@ -77,6 +77,7 @@
               color="#7c9473"
               class="add-in-cart-button white--text"
               x-large
+              :disabled="isMaxQuantityReached"
               @click="!isNaN(itemQuantity) ? addInCart() : ''"
             >
               <v-icon
@@ -234,6 +235,19 @@ export default {
         }, {});
 
       return productInfos;
+    },
+    isMaxQuantityReached() {
+        let res = false;
+
+        let filteredCart = this.$store.state.cartItems.filter(element => {
+            return element.slug == this.product.slug;
+        });
+
+        if (filteredCart.length > 0) {
+            res = filteredCart[0].quantity == this.product.stock;
+        }
+
+        return res;
     },
   },
   methods: {

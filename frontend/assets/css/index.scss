@@ -107,6 +107,9 @@ a {
     height: 70px !important;
     vertical-align: middle;
 }
+.v-btn--disabled {
+    background-color: rgba(124, 148, 115, 0.5);
+}
 
 // Cart
 .cart-title {

@@ -1,7 +1,9 @@
 <template>
 <v-app id="app">
   <v-card class="overflow-hidden">
-    <NavBar />
+    <NavBar 
+      @displaySnackbar="launchSnackbar" 
+    />
     <v-sheet
       id="scrolling-techniques-3"
       class="overflow-y-auto"
@@ -14,6 +16,23 @@
         <TransactionCompletedDialog 
           :dialog="showTransactionCompletedDialog" 
           @onClose="showTransactionCompletedDialog = false" />
+
+        <v-snackbar
+          v-model="snackbar"
+        >
+          {{ textSnackbar }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="pink"
+              text
+              v-bind="attrs"
+              @click="snackbar = false"
+            >
+              Fermer
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-main>
 
       <Footer />
@@ -37,9 +56,20 @@ export default {
     transactionCompletedDialog,
   },
   data() {
-    return {};
+    return {
+      snackbar: false,
+      text: '',
+    };
   },
   computed: {
+    textSnackbar: {
+      get() {
+        return this.text;
+      },
+      set(value) {
+        this.text = value;
+      }
+    },
     screenHeight() {
       return this.$vssHeight;
     },
@@ -50,6 +80,12 @@ export default {
       set(value) {
         this.$store.commit('isTransactionCompleted', value);
       } 
+    }
+  },
+  methods: {
+    launchSnackbar(value) {
+      this.textSnackbar = value;
+      this.snackbar = true;
     }
   }
 }

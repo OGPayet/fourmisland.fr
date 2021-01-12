@@ -70,7 +70,7 @@
               </v-btn>
             </template>
             <v-list class="mt-2">
-              <v-list-item link @click="loginDialog = true">
+              <v-list-item v-if="!isUserLogged" link @click="loginDialog = true">
                 <v-list-item-title>
                   <v-icon class="mr-1">
                     mdi-login-variant
@@ -78,12 +78,28 @@
                   Se connecter
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item link>
+              <v-list-item v-if="!isUserLogged" link @click="registerDialog = true">
                 <v-list-item-title>
                   <v-icon class="mr-1">
                     mdi-account-plus
                   </v-icon>
                   Créer un compte
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item v-if="isUserLogged" link @click="accountDialog = true">
+                <v-list-item-title>
+                  <v-icon class="mr-1">
+                    mdi-account-circle
+                  </v-icon>
+                  Mon compte
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item v-if="isUserLogged" link @click="logout()">
+                <v-list-item-title>
+                  <v-icon class="mr-1">
+                    mdi-logout-variant
+                  </v-icon>
+                  Se déconnecter
                 </v-list-item-title>
               </v-list-item>
             </v-list>
@@ -92,8 +108,30 @@
       </v-row>
     </v-container>
 
-    <LoginDialog :dialog="loginDialog" @onClose="loginDialog = false" />
-    <Cart :dialog="cartDialog" @onClose="cartDialog = false" />
+    <LoginDialog 
+      v-if="!isUserLogged" 
+      :dialog="loginDialog" 
+      :isUserLogged="isUserLogged" 
+      @onClose="loginDialog = false" 
+      @successLogin="emitTextSnackbar"
+    />
+    <RegisterDialog 
+      v-if="!isUserLogged" 
+      :dialog="registerDialog" 
+      :isUserLogged="isUserLogged" 
+      @onClose="registerDialog = false"
+      @successRegister="emitTextSnackbar"
+    />
+    <AccountDialog 
+      v-if="isUserLogged" 
+      :dialog="accountDialog" 
+      :isUserLogged="isUserLogged" 
+      @onClose="accountDialog = false" 
+    />
+    <Cart 
+      :dialog="cartDialog" 
+      @onClose="cartDialog = false" 
+    />
 
     <template v-slot:extension>
       <v-tabs align-with-title>
@@ -109,17 +147,24 @@
 <script>
 import Cart from "./Cart"
 import LoginDialog from "./LoginDialog"
+import RegisterDialog from "./RegisterDialog"
+import AccountDialog from "./AccountDialog"
 
 export default {
   components: {
     Cart,
     LoginDialog,
+    RegisterDialog,
+    AccountDialog,
   },
   data() {
     return {
       searchValue: null,
       isCartDialogOpen: false,
       isLoginDialogOpen: false,
+      isRegisterDialogOpen: false,
+      isAccountDialogOpen: false,
+      logoutTextSnackbar: 'Vous êtes maintenant déconnecté.',
     }
   },
   watch: {
@@ -128,6 +173,9 @@ export default {
     },
   },
   computed: {
+    isUserLogged() {
+      return this.$store.state.isUserLogged;
+    },
     isTransactionCompleted() {
       return this.$store.state.isTransactionCompleted;
     },
@@ -137,6 +185,22 @@ export default {
       },
       set(value) {
         this.isLoginDialogOpen = value;
+      }
+    },
+    registerDialog: {
+      get() {
+        return this.isRegisterDialogOpen;
+      },
+      set(value) {
+        this.isRegisterDialogOpen = value;
+      }
+    },
+    accountDialog: {
+      get() {
+        return this.isAccountDialogOpen;
+      },
+      set(value) {
+        this.isAccountDialogOpen = value;
       }
     },
     cartDialog: {
@@ -164,6 +228,20 @@ export default {
         this.$store.commit('setFilteredProducts', filteredProducts);
       }
     },
+  },
+  methods: {
+    async logout() {
+      try {
+        await this.$strapi.logout();
+        this.$store.dispatch('logout');
+        this.emitTextSnackbar(this.logoutTextSnackbar);
+      } catch(error) {
+        console.info(error);
+      }
+    },
+    emitTextSnackbar(textSnackbar) {
+      this.$emit('displaySnackbar', textSnackbar);
+    }
   },
 };
 </script>

@@ -91,7 +91,7 @@ export default {
   components: { ProductsHeader },
   props: {
     products: Array,
-    error: Object,
+    error: Error,
     isDataLoaded: Boolean,
   },
   methods: {

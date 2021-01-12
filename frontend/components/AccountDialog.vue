@@ -1,16 +1,33 @@
 <template>
-    <v-row v-if="!isUserLogged" justify="center">
+    <v-row v-if="isUserLogged" justify="center">
         <v-dialog
             v-model="dialog"
             max-width="1200"
             @click:outside="closeDialog()"
         >
             <v-card>
-                <v-toolbar color="#6A76AB" dark>
+                <v-app-bar
+                    color="#6A76AB"
+                    dark
+                    :src="require('~/assets/img/banner.jpeg')"
+                >
+                    <template v-slot:img="{ props }">
+                        <v-img
+                            v-bind="props"
+                            gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                        ></v-img>
+                    </template>
                     <v-toolbar-title class="cart-title">
-                        Se connecter
+                        Mon compte
                     </v-toolbar-title>
-                </v-toolbar>
+
+                    <template v-slot:extension>
+                        <v-tabs align-with-title>
+                            <v-tab>Mes infos</v-tab>
+                            <v-tab>Mes commandes</v-tab>
+                        </v-tabs>
+                    </template>
+                </v-app-bar>
 
                 <v-card-text class="login-dialog-text mt-10">
                     <v-form
@@ -26,22 +43,30 @@
                         ></v-text-field>
 
                         <v-text-field
+                            v-model="username"
+                            :rules="usernameRules"
+                            label="Votre pseudo"
+                            required
+                        ></v-text-field>
+
+                        <v-text-field
                             v-model="password"
                             type="password"
                             :rules="passwordRules"
                             label="Votre mot de passe"
                             required
                         ></v-text-field>
-
-                        <p v-if="isErrorLogin" class="text-white red lighten-2 mt-2">Adresse e-mail ou mot de passe invalide !</p>
+                        
+                        <p v-if="isEmailAlreadyTaken" class="text-white red lighten-2 mt-2">Cette adresse e-mail est déjà utilisée, veuillez saisir une autre adresse e-mail !</p>
+                        <p v-if="usernameAlreadyTaken" class="text-white red lighten-2 mt-2">Cet pseudo est déjà utilisé, veuillez saisir un autre pseudo !</p>
 
                         <v-btn
                             :disabled="!valid"
                             color="success"
                             class="mr-4 mt-7"
-                            @click="connection()"
+                            @click="updateInfos()"
                         >
-                            Se connecter
+                            Sauvegarder
                         </v-btn>
                     </v-form>
                 </v-card-text>
@@ -76,26 +101,37 @@ export default {
     return {
         valid: true,
         email: null,
+        username: null,
         password: null,
         emailRules: [
             v => !!v || "L'adresse email est requise",
             v => /.+@.+\..+/.test(v) || "L'adresse email doit être valide",
         ],
+        usernameRules: [
+            v => !!v || "Le pseudo est requis",
+        ],
         passwordRules: [
             v => !!v || "Le mot de passe est requis",
         ],
-        loginResponse: {},
-        errorLogin: false,
-        successLoginTextSnackbar: 'Compte créé avec succès ! Vous êtes maintenant connecté.',
+        emailAlreadyTaken: false,
+        usernameAlreadyTaken: false,
     };
   },
   computed: {
-    isErrorLogin: {
+      isEmailAlreadyTaken: {
         get() {
-            return this.errorLogin;
+            return this.emailAlreadyTaken;
         },
         set(value) {
-            this.errorLogin = value;
+            this.emailAlreadyTaken = value;
+        }
+    },
+    isUsernameAlreadyTaken: {
+        get() {
+            return this.usernameAlreadyTaken;
+        },
+        set(value) {
+            this.usernameAlreadyTaken = value;
         }
     },
   },
@@ -103,22 +139,24 @@ export default {
     closeDialog() {
         this.$emit('onClose');
     },
-    async connection () {
+    async updateInfos () {
         this.$refs.form.validate();
         try {
-            this.loginResponse = await this.$strapi.login({ identifier: this.email, password: this.password });
-            if (this.loginResponse.jwt != undefined) {
-                this.closeDialog();
-                this.$emit('successLogin', this.successLoginTextSnackbar);
-                this.$store.dispatch('userLogged', this.loginResponse);
+            if (this.email != null) {
+                await this.$strapi.$users.update('email', this.email)
+                this.$strapi.user.email = this.email;
+                this.$store.commit('setUserEmail', this.email);
             }
-        } catch(error) {
-            if (error.message == 'Please provide your username or your e-mail.' || error.message == 'Identifier or password invalid.') {
-                this.isErrorLogin = true;
+        } catch (error) {
+            console.info(error);
+            if (error.message == 'Email is already taken.') {
+                this.isEmailAlreadyTaken = true;
                 this.email = '';
-                this.password = '';
+            } else if (error.message == 'Username already taken') {
+                this.isUsernameAlreadyTaken = true;
+                this.username = '';
             }
-        }   
+        }
     },
   },
 };

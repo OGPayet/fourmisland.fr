@@ -6,9 +6,9 @@
             @click:outside="closeDialog()"
         >
             <v-card>
-                <v-toolbar color="#6A76AB" dark>
+                <v-toolbar color="#7c9473">
                     <v-toolbar-title class="cart-title">
-                        Se connecter
+                        Créer un compte
                     </v-toolbar-title>
                 </v-toolbar>
 
@@ -26,22 +26,30 @@
                         ></v-text-field>
 
                         <v-text-field
+                            v-model="username"
+                            :rules="usernameRules"
+                            label="Votre pseudo"
+                            required
+                        ></v-text-field>
+
+                        <v-text-field
                             v-model="password"
                             type="password"
                             :rules="passwordRules"
                             label="Votre mot de passe"
                             required
                         ></v-text-field>
-
-                        <p v-if="isErrorLogin" class="text-white red lighten-2 mt-2">Adresse e-mail ou mot de passe invalide !</p>
+                        
+                        <p v-if="isEmailAlreadyTaken" class="text-white red lighten-2 mt-2">Cette adresse e-mail est déjà utilisée, veuillez saisir une autre adresse e-mail !</p>
+                        <p v-if="usernameAlreadyTaken" class="text-white red lighten-2 mt-2">Cet pseudo est déjà utilisé, veuillez saisir un autre pseudo !</p>
 
                         <v-btn
                             :disabled="!valid"
                             color="success"
                             class="mr-4 mt-7"
-                            @click="connection()"
+                            @click="register()"
                         >
-                            Se connecter
+                            Créer un compte
                         </v-btn>
                     </v-form>
                 </v-card-text>
@@ -76,26 +84,38 @@ export default {
     return {
         valid: true,
         email: null,
+        username: null,
         password: null,
         emailRules: [
             v => !!v || "L'adresse email est requise",
             v => /.+@.+\..+/.test(v) || "L'adresse email doit être valide",
         ],
+        usernameRules: [
+            v => !!v || "Le pseudo est requis",
+        ],
         passwordRules: [
             v => !!v || "Le mot de passe est requis",
         ],
-        loginResponse: {},
-        errorLogin: false,
-        successLoginTextSnackbar: 'Compte créé avec succès ! Vous êtes maintenant connecté.',
+        emailAlreadyTaken: false,
+        usernameAlreadyTaken: false,
+        successRegisterTextSnackbar: 'Vous êtes maintenant connecté.',
     };
   },
   computed: {
-    isErrorLogin: {
+    isEmailAlreadyTaken: {
         get() {
-            return this.errorLogin;
+            return this.emailAlreadyTaken;
         },
         set(value) {
-            this.errorLogin = value;
+            this.emailAlreadyTaken = value;
+        }
+    },
+    isUsernameAlreadyTaken: {
+        get() {
+            return this.usernameAlreadyTaken;
+        },
+        set(value) {
+            this.usernameAlreadyTaken = value;
         }
     },
   },
@@ -103,22 +123,22 @@ export default {
     closeDialog() {
         this.$emit('onClose');
     },
-    async connection () {
+    async register() {
         this.$refs.form.validate();
         try {
-            this.loginResponse = await this.$strapi.login({ identifier: this.email, password: this.password });
-            if (this.loginResponse.jwt != undefined) {
-                this.closeDialog();
-                this.$emit('successLogin', this.successLoginTextSnackbar);
-                this.$store.dispatch('userLogged', this.loginResponse);
-            }
-        } catch(error) {
-            if (error.message == 'Please provide your username or your e-mail.' || error.message == 'Identifier or password invalid.') {
-                this.isErrorLogin = true;
+            let registerResponse = await this.$strapi.register({ email: this.email, username: this.username, password: this.password });
+            this.$store.dispatch('userLogged', registerResponse);
+            this.closeDialog();
+            this.$emit('successRegister', this.successRegisterTextSnackbar);
+        } catch (error) {
+            if (error.message == 'Email is already taken.') {
+                this.isEmailAlreadyTaken = true;
                 this.email = '';
-                this.password = '';
+            } else if (error.message == 'Username already taken') {
+                this.isUsernameAlreadyTaken = true;
+                this.username = '';
             }
-        }   
+        }
     },
   },
 };

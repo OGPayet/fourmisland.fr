@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "commandes",
+  "info": {
+    "name": "Commandes",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "utilisateur": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "fourmis": {
+      "collection": "fourmis"
+    },
+    "prixTotal": {
+      "type": "decimal"
+    },
+    "quantite": {
+      "type": "richtext"
+    }
+  }
+}

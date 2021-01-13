@@ -93,6 +93,7 @@ export default {
     url: process.env.API_URL || "http://localhost:1337",
     entities: [
       'users',
+      'commandes',
       'fourmis',
     ],
   },

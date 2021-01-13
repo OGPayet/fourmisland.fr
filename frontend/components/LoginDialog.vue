@@ -6,14 +6,25 @@
             @click:outside="closeDialog()"
         >
             <v-card>
-                <v-toolbar color="#6A76AB" dark>
+                <v-app-bar
+                    color="#6A76AB"
+                    dark
+                    :src="require('~/assets/img/banner.jpeg')"
+                >
+                    <template v-slot:img="{ props }">
+                        <v-img
+                            v-bind="props"
+                            gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                        ></v-img>
+                    </template>
                     <v-toolbar-title class="cart-title">
                         Se connecter
                     </v-toolbar-title>
-                </v-toolbar>
+                </v-app-bar>
 
-                <v-card-text class="login-dialog-text mt-10">
+                <v-card-text class="login-dialog-text mt-16">
                     <v-form
+                        class="form ml-4"
                         ref="form"
                         v-model="valid"
                         lazy-validation
@@ -22,6 +33,10 @@
                             v-model="email"
                             :rules="emailRules"
                             label="Votre adresse mail"
+                            class="my-account-input mt-3"
+                            height="60px"
+                            prepend-inner-icon="mdi-email"
+                            outlined
                             required
                         ></v-text-field>
 
@@ -30,6 +45,10 @@
                             type="password"
                             :rules="passwordRules"
                             label="Votre mot de passe"
+                            class="my-account-input mt-3"
+                            height="60px"
+                            prepend-inner-icon="mdi-lock"
+                            outlined
                             required
                         ></v-text-field>
 
@@ -40,6 +59,7 @@
                             :disabled="!valid"
                             color="success"
                             class="mr-4 mt-7"
+                            large
                             @click="connection()"
                         >
                             Se connecter
@@ -53,7 +73,6 @@
                     <v-btn
                         class="cart-return-button"
                         color="#7c9473"
-                        large
                         @click="closeDialog()"
                     >
                         <v-icon class="mr-2">

@@ -7,16 +7,26 @@
             @click:outside="closeDialog()"
         >
             <v-card>
-                <v-toolbar color="#7c9473">
-                    <v-toolbar-title class="cart-title ml-10">
+                <v-app-bar
+                    color="#6A76AB"
+                    dark
+                    :src="require('~/assets/img/banner.jpeg')"
+                >
+                    <template v-slot:img="{ props }">
+                        <v-img
+                            v-bind="props"
+                            gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                        ></v-img>
+                    </template>
+                    <v-toolbar-title class="cart-title">
                         Votre panier<span v-if="isCartEmpty">&nbsp;est vide</span>
                     </v-toolbar-title>
-                </v-toolbar>
+                </v-app-bar>
 
                 <v-card-text>
                     <v-list three-line>
                         <template v-for="(cartItem, index) in cartItems">
-                            <v-card class="mt-7 mb-5 ml-10 mr-10" outlined :key="index">
+                            <v-card v-if="page == cartItem.page" class="mt-7 mb-5 ml-10 mr-10" outlined :key="index">
                                 <v-list-item :key="index">
                                     <v-list-item-avatar size="80">
                                         <v-img :src="`${getStrapiMedia(cartItem.imageUrl)}`"></v-img>
@@ -43,6 +53,15 @@
                             <v-divider v-if="cartItems.length > 100 && index != (cartItems.length - 1)" :key="index"></v-divider>
                         </template>
                     </v-list>
+
+                    <div v-if="cartItems.length > 4" class="text-center">
+                        <v-pagination
+                            v-model="page"
+                            :length="Math.ceil(cartItems.length / 4)"
+                            :total-visible="7"
+                        ></v-pagination>
+                    </div>
+
                     <h4 v-if="!isCartEmpty" class="cart-total-price mt-5 ml-10 mr-10"><strong>
                         Total : {{ cartTotalPrice }} €
                     </strong></h4>
@@ -55,7 +74,6 @@
                     <v-btn
                         class="cart-return-button"
                         color="#7c9473"
-                        large
                         @click="closeDialog()"
                     >
                         <v-icon class="mr-2">
@@ -79,6 +97,7 @@ export default {
   },
   data() {
     return {
+        page: 1,
     }
   },
   watch: {
@@ -94,7 +113,14 @@ export default {
   },
   computed: {
     cartItems() {
-        return this.$store.state.cartItems;
+        let page = 1;
+        let cartItemsList = this.$store.state.cartItems;
+        cartItemsList.forEach((item, index) => {
+            index != 0 ? Number.isInteger(index/4) ? page++ : '' : '';
+            cartItemsList[index].page = page;
+        });
+        
+        return cartItemsList;
     },
     isCartEmpty() {
         return this.$store.state.cartItems.length > 0 ? false : true;
@@ -146,8 +172,32 @@ export default {
                     this.$store.state.cartItems.forEach(async product => {
                         await this.$strapi.update('fourmis', product.id, { stock: product.actualStock - product.quantity }); 
                     });
+
+                    let fourmisIds = [];
+                    let quantite = [];
+                    this.$store.state.cartItems.forEach(fourmis => {
+                        let quantity = {
+                            nom: fourmis.name,
+                            quantite: fourmis.quantity
+                        };
+                        fourmisIds.push(fourmis.id);
+                        quantite.push(quantity);
+                    });
+                    
+                    try {
+                        await this.$strapi.$commandes.create({ 
+                            utilisateur: this.$strapi.user.id,
+                            fourmis: fourmisIds,
+                            quantite: JSON.stringify(quantite),
+                            prixTotal: this.cartTotalPrice
+                        });
+                    } catch (error) {
+                        console.info(error.message);
+                    }
+
                     this.$router.push('/');
                     this.$store.dispatch('transactionCompleted', details.payer);
+
                     console.info(details);
                     console.info(this.$store.state.payer);
                 });

@@ -23,14 +23,16 @@
 
                     <template v-slot:extension>
                         <v-tabs align-with-title>
-                            <v-tab>Mes infos</v-tab>
-                            <v-tab>Mes commandes</v-tab>
+                            <v-tab @click="activeTab = 1">Mes infos</v-tab>
+                            <v-tab @click="activeTab = 2">Mon adresse de livraison</v-tab>
+                            <v-tab @click="activeTab = 3">Mes commandes</v-tab>
                         </v-tabs>
                     </template>
                 </v-app-bar>
 
-                <v-card-text class="login-dialog-text mt-10">
+                <v-card-text v-if="activeTab == 1" class="login-dialog-text mt-16">
                     <v-form
+                        class="form ml-4"
                         ref="form"
                         v-model="valid"
                         lazy-validation
@@ -39,6 +41,10 @@
                             v-model="email"
                             :rules="emailRules"
                             label="Votre adresse mail"
+                            class="my-account-input"
+                            height="60px"
+                            prepend-inner-icon="mdi-email"
+                            outlined
                             required
                         ></v-text-field>
 
@@ -46,14 +52,10 @@
                             v-model="username"
                             :rules="usernameRules"
                             label="Votre pseudo"
-                            required
-                        ></v-text-field>
-
-                        <v-text-field
-                            v-model="password"
-                            type="password"
-                            :rules="passwordRules"
-                            label="Votre mot de passe"
+                            class="my-account-input mt-3"
+                            height="60px"
+                            prepend-inner-icon="mdi-account-arrow-right"
+                            outlined
                             required
                         ></v-text-field>
                         
@@ -64,7 +66,112 @@
                             :disabled="!valid"
                             color="success"
                             class="mr-4 mt-7"
-                            @click="updateInfos()"
+                            large
+                            @click="updateAccountInfos()"
+                        >
+                            Sauvegarder
+                        </v-btn>
+
+                        <v-snackbar
+                            v-model="accountInfosSnackbar"
+                            centered
+                            timeout="2000"
+                            color="deep-purple accent-4"
+                            elevation="24"
+                        >
+                            {{ textSnackbar }}
+
+                            <template v-slot:action="{ attrs }">
+                                <v-btn
+                                    color="pink"
+                                    text
+                                    v-bind="attrs"
+                                    @click="accountInfosSnackbar = false"
+                                >
+                                    Fermer
+                                </v-btn>
+                            </template>
+                        </v-snackbar>
+                    </v-form>
+                </v-card-text>
+                <v-card-text v-if="activeTab == 2" class="login-dialog-text mt-16">
+                    <v-form
+                        class="form ml-4"
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                    >
+                        <v-text-field
+                            v-model="address"
+                            :rules="addressRules"
+                            label="Votre adresse"
+                            class="my-account-input"
+                            height="60px"
+                            prepend-inner-icon="mdi-map-marker"
+                            outlined
+                            required
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="city"
+                            :rules="cityRules"
+                            label="Votre ville"
+                            class="my-account-input mt-3"
+                            height="60px"
+                            prepend-inner-icon="mdi-city"
+                            outlined
+                            required
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="zipCode"
+                            :rules="zipCodeRules"
+                            label="Votre code postal"
+                            class="my-account-input mt-3"
+                            height="60px"
+                            prepend-inner-icon="mdi-form-textbox-password"
+                            outlined
+                            required
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="country"
+                            :rules="countryRules"
+                            label="Votre pays"
+                            class="my-account-input mt-3"
+                            height="60px"
+                            prepend-inner-icon="mdi-flag"
+                            outlined
+                            required
+                        ></v-text-field>
+
+                        <v-snackbar
+                            v-model="deliveryInfosSnackbar"
+                            centered
+                            timeout="2000"
+                            color="deep-purple accent-4"
+                            elevation="24"
+                        >
+                            {{ textSnackbar }}
+
+                            <template v-slot:action="{ attrs }">
+                                <v-btn
+                                    color="pink"
+                                    text
+                                    v-bind="attrs"
+                                    @click="deliveryInfosSnackbar = false"
+                                >
+                                    Fermer
+                                </v-btn>
+                            </template>
+                        </v-snackbar>
+
+                        <v-btn
+                            :disabled="!valid"
+                            color="success"
+                            class="mr-4 mt-7"
+                            large
+                            @click="updateDeliveryInfos()"
                         >
                             Sauvegarder
                         </v-btn>
@@ -77,7 +184,6 @@
                     <v-btn
                         class="cart-return-button"
                         color="#7c9473"
-                        large
                         @click="closeDialog()"
                     >
                         <v-icon class="mr-2">
@@ -102,7 +208,10 @@ export default {
         valid: true,
         email: null,
         username: null,
-        password: null,
+        address: null,
+        city: null,
+        zipCode: null,
+        country: null,
         emailRules: [
             v => !!v || "L'adresse email est requise",
             v => /.+@.+\..+/.test(v) || "L'adresse email doit être valide",
@@ -110,15 +219,47 @@ export default {
         usernameRules: [
             v => !!v || "Le pseudo est requis",
         ],
-        passwordRules: [
-            v => !!v || "Le mot de passe est requis",
+        addressRules: [
+            v => !!v || "L'adresse est requise",
         ],
+        cityRules: [
+            v => !!v || "La ville est requise",
+        ],
+        zipCodeRules: [
+            v => !!v || "Le code postal est requis",
+        ],
+        countryRules: [
+            v => !!v || "Le pays est requis",
+        ],
+        showPasswordFields: false,
         emailAlreadyTaken: false,
         usernameAlreadyTaken: false,
+        activeTab: 1,
+        accountInfosSnackbar: false,
+        deliveryInfosSnackbar: false,
+        text: '',
     };
   },
   computed: {
-      isEmailAlreadyTaken: {
+    userEmail() {
+        return this.$strapi.user.email;
+    },
+    userUsername() {
+        return this.$strapi.user.username;
+    },
+    userAddress() {
+        return this.$strapi.user.address;
+    },
+    userCity() {
+        return this.$strapi.user.city;
+    },
+    userZipCode() {
+        return this.$strapi.user.zipCode;
+    },
+    userCountry() {
+        return this.$strapi.user.country;
+    },
+    isEmailAlreadyTaken: {
         get() {
             return this.emailAlreadyTaken;
         },
@@ -134,30 +275,86 @@ export default {
             this.usernameAlreadyTaken = value;
         }
     },
+    textSnackbar: {
+        get() {
+            return this.text;
+        },
+        set(value) {
+            this.text = value;
+        }
+    },
   },
   methods: {
+    resetForm() {
+        this.$refs.form.reset();
+        this.isErrorLogin = false;
+        this.isErrorConfirmedEmail = false;
+    },
     closeDialog() {
         this.$emit('onClose');
+        this.initInfos();
     },
-    async updateInfos () {
+    initInfos() {
+        this.email = this.userEmail;
+        this.username = this.userUsername;
+        this.address = this.userAddress;
+        this.city = this.userCity;
+        this.zipCode = this.userZipCode;
+        this.country = this.userCountry;
+    },
+    async updateAccountInfos () {
         this.$refs.form.validate();
+
+        this.$strapi.user.email = this.email;
+        this.$strapi.user.username = this.username;
+
+        let errorUpdate = null;
         try {
-            if (this.email != null) {
-                await this.$strapi.$users.update('email', this.email)
-                this.$strapi.user.email = this.email;
-                this.$store.commit('setUserEmail', this.email);
-            }
+            await this.$strapi.$users.update(this.$strapi.user.id, this.$strapi.user);
         } catch (error) {
-            console.info(error);
-            if (error.message == 'Email is already taken.') {
+            errorUpdate = error;
+            console.info(error.message);
+            if (error.message == 'Email already taken') {
                 this.isEmailAlreadyTaken = true;
                 this.email = '';
-            } else if (error.message == 'Username already taken') {
+            } else if (error.message == 'username.alreadyTaken.') {
                 this.isUsernameAlreadyTaken = true;
                 this.username = '';
             }
         }
+
+        if (errorUpdate == null) {
+            this.isEmailAlreadyTaken = false;
+            this.isUsernameAlreadyTaken = false;
+            this.textSnackbar = 'Modification sauvegardé avec succès !';
+            this.accountInfosSnackbar = true;
+        }
+    },
+    async updateDeliveryInfos () {
+        this.$refs.form.validate();
+
+        this.$strapi.user.address = this.address;
+        this.$strapi.user.city = this.city;
+        this.$strapi.user.zipCode = this.zipCode;
+        this.$strapi.user.country = this.country;
+
+        let errorUpdate = null;
+        try {
+            await this.$strapi.$users.update(this.$strapi.user.id, this.$strapi.user);
+        } catch (error) {
+            errorUpdate = error;
+            console.info(error.message);
+        }
+
+        if (errorUpdate == null) {
+            this.textSnackbar = 'Modification sauvegardé avec succès !';
+            this.deliveryInfosSnackbar = true;
+        }
     },
   },
+  mounted() {
+    console.info(this.$strapi.user);
+    this.initInfos();
+  }
 };
 </script>

@@ -41,7 +41,7 @@
                         ></v-text-field>
                         
                         <p v-if="isEmailAlreadyTaken" class="text-white red lighten-2 mt-2">Cette adresse e-mail est déjà utilisée, veuillez saisir une autre adresse e-mail !</p>
-                        <p v-if="usernameAlreadyTaken" class="text-white red lighten-2 mt-2">Cet pseudo est déjà utilisé, veuillez saisir un autre pseudo !</p>
+                        <p v-if="usernameAlreadyTaken" class="text-white red lighten-2 mt-2">Ce pseudo est déjà utilisé, veuillez saisir un autre pseudo !</p>
 
                         <v-btn
                             :disabled="!valid"
@@ -98,7 +98,7 @@ export default {
         ],
         emailAlreadyTaken: false,
         usernameAlreadyTaken: false,
-        successRegisterTextSnackbar: 'Vous êtes maintenant connecté.',
+        successRegisterTextSnackbar: 'Compte créé avec succès ! Vous êtes maintenant connecté.',
     };
   },
   computed: {
@@ -120,14 +120,20 @@ export default {
     },
   },
   methods: {
+    resetForm() {
+        this.$refs.form.reset();
+        this.isEmailAlreadyTaken = false;
+        this.isUsernameAlreadyTaken = false;
+    },
     closeDialog() {
         this.$emit('onClose');
+        this.resetForm();
     },
     async register() {
         this.$refs.form.validate();
         try {
-            let registerResponse = await this.$strapi.register({ email: this.email, username: this.username, password: this.password });
-            this.$store.dispatch('userLogged', registerResponse);
+            await this.$strapi.register({ email: this.email, username: this.username, password: this.password });
+            this.$store.commit('userLogged', true);
             this.closeDialog();
             this.$emit('successRegister', this.successRegisterTextSnackbar);
         } catch (error) {

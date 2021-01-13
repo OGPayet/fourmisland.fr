@@ -36,6 +36,9 @@ a {
 .v-skeleton-loader__image, .v-skeleton-loader__article {
     z-index: 0;
 }
+.form {
+    width: 50%;
+}
 
 // NavBar
 .nav-bar-container {
@@ -141,6 +144,11 @@ a {
 .transaction-completed-dialog-text {
     font-size: 19px !important;
     font-weight: bold !important;
+}
+
+// MyAccountDialog 
+.my-account-input input {
+    margin-left: 10px;
 }
 
 // Footer

@@ -7,10 +7,6 @@ export const state = () => ({
     isTransactionCompleted: false,
     payer: {},
     isUserLogged: false,
-    userJwt: null,
-    userEmail: null,
-    userId: null,
-    userUsername: null,
 })
   
 export const mutations = {
@@ -60,18 +56,6 @@ export const mutations = {
     isUserLogged(state, value) {
         state.isUserLogged = value;
     },
-    setUserJwt(state, jwt) {
-        state.userJwt = jwt;
-    },
-    setUserEmail(state, email) {
-        state.userEmail = email;
-    },
-    setUserId(state, id) {
-        state.userId = id;
-    },
-    setUserUsername(state, username) {
-        state.userUsername = username;
-    },
 }
 
 export const actions = {
@@ -88,18 +72,4 @@ export const actions = {
         commit('clearCart');
         commit('isTransactionCompleted', true);
     },
-    userLogged({ commit }, loginResponse) {
-        commit('isUserLogged', true);
-        commit('setUserJwt', loginResponse.jwt);
-        commit('setUserEmail', loginResponse.user.email);
-        commit('setUserId', loginResponse.user.id);
-        commit('setUserUsername', loginResponse.user.username);
-    },
-    logout({ commit }) {
-        commit('isUserLogged', false);
-        commit('setUserJwt', null);
-        commit('setUserEmail', null);
-        commit('setUserId', null);
-        commit('setUserUsername', null);
-    }
 }

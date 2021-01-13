@@ -34,6 +34,7 @@
                         ></v-text-field>
 
                         <p v-if="isErrorLogin" class="text-white red lighten-2 mt-2">Adresse e-mail ou mot de passe invalide !</p>
+                        <p v-if="isErrorConfirmedEmail" class="text-white red lighten-2 mt-2">Veuillez confirmer votre adresse mail !</p>
 
                         <v-btn
                             :disabled="!valid"
@@ -86,7 +87,8 @@ export default {
         ],
         loginResponse: {},
         errorLogin: false,
-        successLoginTextSnackbar: 'Compte créé avec succès ! Vous êtes maintenant connecté.',
+        errorConfirmedEmail: false,
+        successLoginTextSnackbar: 'Vous êtes maintenant connecté.',
     };
   },
   computed: {
@@ -98,10 +100,24 @@ export default {
             this.errorLogin = value;
         }
     },
+    isErrorConfirmedEmail: {
+        get() {
+            return this.errorConfirmedEmail;
+        },
+        set(value) {
+            this.errorConfirmedEmail = value;
+        }
+    },
   },
   methods: {
+    resetForm() {
+        this.$refs.form.reset();
+        this.isErrorLogin = false;
+        this.isErrorConfirmedEmail = false;
+    },
     closeDialog() {
         this.$emit('onClose');
+        this.resetForm();
     },
     async connection () {
         this.$refs.form.validate();
@@ -110,13 +126,16 @@ export default {
             if (this.loginResponse.jwt != undefined) {
                 this.closeDialog();
                 this.$emit('successLogin', this.successLoginTextSnackbar);
-                this.$store.dispatch('userLogged', this.loginResponse);
+                this.$store.commit('isUserLogged', true);
             }
         } catch(error) {
+            console.info(error.message);
             if (error.message == 'Please provide your username or your e-mail.' || error.message == 'Identifier or password invalid.') {
                 this.isErrorLogin = true;
                 this.email = '';
                 this.password = '';
+            } else if (error.message == 'Your account email is not confirmed') {
+                this.isErrorConfirmedEmail = true;
             }
         }   
     },

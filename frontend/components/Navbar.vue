@@ -233,7 +233,7 @@ export default {
     async logout() {
       try {
         await this.$strapi.logout();
-        this.$store.dispatch('logout');
+        this.$store.commit('isUserLogged', false);
         this.emitTextSnackbar(this.logoutTextSnackbar);
       } catch(error) {
         console.info(error);

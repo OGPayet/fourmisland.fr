@@ -10,10 +10,6 @@ export default ({store}) => {
       'isTransactionCompleted', 
       'payer',
       'isUserLogged',
-      'userJwt',
-      'userEmail',
-      'userId',
-      'userUsername',
     ]
   })(store)
 }

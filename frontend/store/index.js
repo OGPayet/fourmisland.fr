@@ -7,6 +7,7 @@ export const state = () => ({
     isTransactionCompleted: false,
     payer: {},
     isUserLogged: false,
+    commands: [],
 })
   
 export const mutations = {
@@ -55,6 +56,9 @@ export const mutations = {
     },
     isUserLogged(state, value) {
         state.isUserLogged = value;
+    },
+    setCommands(state, commands) {
+        state.commands = commands;
     },
 }
 

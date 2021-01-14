@@ -1,5 +1,11 @@
 <template>
-  <v-card class="mx-auto products-header-card" outlined>
+  <v-card 
+    class="mx-auto products-header-card" 
+    :elevation="elevation" 
+    outlined 
+    @mouseover="elevation = 3" 
+    @mouseout="elevation = 1"
+  >
     <v-card-title>Fourmis</v-card-title>
 
     <v-card-text>
@@ -13,7 +19,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      elevation: 1,
+    };
   },
 };
 </script>

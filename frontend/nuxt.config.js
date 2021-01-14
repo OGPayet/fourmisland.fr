@@ -63,7 +63,13 @@ export default {
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/vuetify',
     '@aceforth/nuxt-optimized-images',
+    '@nuxtjs/moment',
   ],
+
+  moment: {
+    locales: ['fr']
+  },
+
   /*
    ** Nuxt.js modules
    */

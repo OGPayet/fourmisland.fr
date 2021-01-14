@@ -10,6 +10,7 @@ export default ({store}) => {
       'isTransactionCompleted', 
       'payer',
       'isUserLogged',
+      'commands',
     ]
   })(store)
 }

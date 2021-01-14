@@ -47,8 +47,17 @@ a {
 
 // Products
 .product-container {
-    background-color: #e8eae6 !important;
+    background-color: #fafafa !important;
     max-width: 1300px !important;
+}
+.product-card {
+    margin-bottom: 150px !important;
+}
+.products-card {
+    background-color: #e8eae6 !important;
+}
+.products-skeleton-loader {
+    background-color: #e8eae6 !important;
 }
 .product-subtitle {
     padding-top: 0 !important;
@@ -75,6 +84,7 @@ a {
 
 // Products Header 
 .products-header-card {
+    background-color: #fafafa !important;
     max-width: 1300px !important;
 }
 
@@ -103,6 +113,9 @@ a {
 .product-info-tr {
     line-height: 25px;
     border-bottom: 1px solid white;
+}
+.product-info-tr-last {
+    line-height: 25px;
 }
 .product-infos-name {
     height: 70px !important;

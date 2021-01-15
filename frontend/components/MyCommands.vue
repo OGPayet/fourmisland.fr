@@ -1,55 +1,66 @@
 <template>
     <div id="my-commands">
-        <v-list three-line>
-            <template v-for="(command, index) in commands">
-                <v-card v-if="page == command.page" class="mb-5 ml-10 mr-10" outlined :key="index">
-                    <v-list-item :key="index">
-                        <v-list-item-avatar size="60">
-                            <v-icon
-                                class="grey lighten-1"
-                                size="30"
-                                dark
-                            >
-                                mdi-package-variant-closed
-                            </v-icon>
-                        </v-list-item-avatar>
+        <div v-if="showCommand" id="command">
+            <Command :command="selectedCommand" @displayMyCommands="showCommand = false" />
+        </div>
 
-                        <v-list-item-content>
-                            <strong><v-list-item-title class="cart-list-item-title">
-                                Commande du {{ $moment(command.created_at).format('LL') }}
-                            </v-list-item-title></strong>
+        <div v-if="!showCommand" id="commands-list">
+            <v-list three-line>
+                <template v-for="(command, index) in commands">
+                    <v-card v-if="page == command.page" class="mb-5 ml-10 mr-10" outlined :key="index">
+                        <v-list-item :key="index">
+                            <v-list-item-avatar size="60">
+                                <v-icon
+                                    class="grey lighten-1"
+                                    size="30"
+                                    dark
+                                >
+                                    mdi-package-variant-closed
+                                </v-icon>
+                            </v-list-item-avatar>
 
-                            <v-list-item-subtitle class="mt-2">
-                                Montant : {{ command.prixTotal }} €
-                            </v-list-item-subtitle>
-                            <v-list-item-subtitle class="mt-4">
-                                <v-btn color="#e8eae6" @click="displayCommand(command)">
-                                    Voir ma commande
-                                </v-btn>
-                            </v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-card>
+                            <v-list-item-content>
+                                <strong><v-list-item-title class="cart-list-item-title">
+                                    Commande du {{ $moment(command.created_at).format('LL') }}
+                                </v-list-item-title></strong>
 
-                <v-divider v-if="commands.length > 100 && index != (commands.length - 1)" :key="index"></v-divider>
-            </template>
-        </v-list>
+                                <v-list-item-subtitle class="mt-2">
+                                    Montant : {{ command.prixTotal }} €
+                                </v-list-item-subtitle>
+                                <v-list-item-subtitle class="mt-4">
+                                    <v-btn color="#e8eae6" @click="selectedCommand = command; showCommand = true;">
+                                        Voir ma commande
+                                    </v-btn>
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
 
-        <div v-if="commands.length > 4" class="text-center">
-            <v-pagination
-                v-model="page"
-                :length="Math.ceil(commands.length / 4)"
-                :total-visible="7"
-            ></v-pagination>
+                    <v-divider v-if="commands.length > 100 && index != (commands.length - 1)" :key="index"></v-divider>
+                </template>
+            </v-list>
+
+            <div v-if="commands.length > 4" class="text-center">
+                <v-pagination
+                    v-model="page"
+                    :length="Math.ceil(commands.length / 4)"
+                    :total-visible="7"
+                ></v-pagination>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import Command from './Command'
+
 export default {
+  components: { Command }, 
   props: {},
   data() {
     return {
+        command: {},
+        showCommand: false,
         page: 1,
         error: null,
     };
@@ -67,15 +78,19 @@ export default {
         
         return commandsList;
     },
+    selectedCommand: {
+        get() {
+            return this.command;
+        },
+        set(value) {
+            this.command = value;
+        }
+    },
   },
-  methods: {
-    displayCommand(command) {
-        this.$emit('displayCommand', command);
-    }
-  },
+  methods: {},
   async mounted() {
     try {
-        this.$store.commit('setCommands', await this.$strapi.$commandes.find([ 'utilisateur.id', this.$strapi.user.id ]));
+        this.$store.commit('setCommands', await this.$strapi.$commandes.find({ 'utilisateur.id': this.$strapi.user.id }));
     } catch (error) {
         this.error = error;
     }

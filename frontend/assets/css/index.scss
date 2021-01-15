@@ -152,6 +152,9 @@ a {
 .cart-return-button {
     color: white !important;
 }
+.cart-card-text-payment-steps {
+    padding: 0px !important;
+}
 
 // TransactionCompletedDialog
 .transaction-completed-dialog-text {
@@ -162,6 +165,13 @@ a {
 // MyAccountDialog 
 .my-account-input input {
     margin-left: 10px;
+}
+
+// Command
+.command-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: black;
 }
 
 // Footer

@@ -155,6 +155,7 @@ export default {
         }
 
         if (errorUpdate == null) {
+            this.$emit('deliveryInfosUpdateSuccess');
             this.textSnackbar = 'Modification sauvegardé avec succès !';
             this.snackbar = true;
         }

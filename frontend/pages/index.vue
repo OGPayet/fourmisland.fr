@@ -1,5 +1,10 @@
 <template>
-<Products :products="filteredProducts.length > 0 ? filteredProducts : products" :isDataLoaded="isProductsDataLoaded" :error="error" />
+  <Products 
+    :products="filteredProducts.length > 0 ? filteredProducts : products" 
+    :isFilteredProducts="filteredProducts.length > 0 ? true : false"
+    :isDataLoaded="isProductsDataLoaded" 
+    :error="error" 
+  />
 </template>
 
 <script>
@@ -16,7 +21,14 @@ export default {
       return this.products.length > 0 ? true : false;
     },
     products() {
-      return this.$store.state.products;
+      let page = 1;
+      let productsList = this.$store.state.products;
+      productsList.forEach((product, index) => {
+        index != 0 ? Number.isInteger(index/9) ? page++ : '' : '';
+        productsList[index].page = page;
+      });
+      
+      return productsList;
     },
     filteredProducts() {
       return this.$store.state.filteredProducts;

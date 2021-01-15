@@ -6,7 +6,28 @@
             eager
             @click:outside="closeDialog()"
         >
-            <v-card>
+            <v-card v-if="!isCartEmpty && showPaymentSteps">
+                <v-app-bar
+                    color="#6A76AB"
+                    dark
+                    :src="require('~/assets/img/banner.jpeg')"
+                >
+                    <template v-slot:img="{ props }">
+                        <v-img
+                            v-bind="props"
+                            gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
+                        ></v-img>
+                    </template>
+                    <v-toolbar-title class="cart-title">
+                        Payement
+                    </v-toolbar-title>
+                </v-app-bar>
+
+                <v-card-text class="cart-card-text-payment-steps">
+                    <PaymentSteps @transactionCompleted="showPaymentSteps = false" />
+                </v-card-text>
+            </v-card>
+            <v-card v-else>
                 <v-app-bar
                     color="#6A76AB"
                     dark
@@ -69,8 +90,19 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
+
+                    <v-btn
+                        v-if="!isCartEmpty"
+                        class="cart-return-button"
+                        color="#7c9473"
+                        @click="showPaymentSteps = true"
+                    >
+                        <v-icon class="mr-2">
+                            mdi-keyboard-return
+                        </v-icon>
+                        Passer au payement
+                    </v-btn>
                     
-                    <div v-if="!isCartEmpty" id="paypal-buttons" class="mr-16" ref="paypal"></div>
                     <v-btn
                         class="cart-return-button"
                         color="#7c9473"
@@ -89,26 +121,17 @@
 
 <script>
 import { getStrapiMedia } from "~/utils/medias"
+import PaymentSteps from './PaymentSteps'
 
 export default {
-  components: {},
+  components: { PaymentSteps },
   props: {
     dialog: Boolean,
   },
   data() {
     return {
         page: 1,
-    }
-  },
-  watch: {
-    dialog(visible) {
-      if (!(this.$store.state.cartItems.length > 0) && this.$store.state.isPaypalButtonLoaded) {
-        this.$store.commit('isPaypalButtonLoaded', false);
-      }
-
-      if (visible && !this.isCartEmpty && !this.$store.state.isPaypalButtonLoaded) {
-        this.$refs.paypal.addEventListener('load', this.loadPaypalButton());
-      }
+        showPaymentSteps: false,
     }
   },
   computed: {
@@ -138,6 +161,7 @@ export default {
     getStrapiMedia,
     closeDialog() {
         this.$emit('onClose');
+        this.showPaymentSteps = false;
     },
     decrementCartItemQuantity(cartItem) {
         let filteredCart = this.$store.state.cartItems.filter(item => {
@@ -149,62 +173,6 @@ export default {
 
             this.$store.dispatch('decrementProductInCartQuantity', index);
         }
-    },
-    loadPaypalButton: function() {
-        window.paypal.Buttons({
-            createOrder: (data, actions) => {
-                return actions.order.create({
-                    purchase_units: [
-                        {
-                            description: 'Commande FourmisLand.com',
-                            amount: {
-                                currency_code: 'EUR',
-                                value: this.cartTotalPrice
-                            }
-                        }
-                    ]
-                });
-            },
-            onApprove: async (data, actions) => {
-                // This function captures the funds from the transaction.
-                return actions.order.capture().then(async (details) => {
-                    // This function shows a transaction success message to your buyer.
-                    this.$store.state.cartItems.forEach(async product => {
-                        await this.$strapi.update('fourmis', product.id, { stock: product.actualStock - product.quantity }); 
-                    });
-
-                    let fourmisIds = [];
-                    let quantite = [];
-                    this.$store.state.cartItems.forEach(fourmis => {
-                        let quantity = {
-                            nom: fourmis.name,
-                            quantite: fourmis.quantity
-                        };
-                        fourmisIds.push(fourmis.id);
-                        quantite.push(quantity);
-                    });
-                    
-                    try {
-                        await this.$strapi.$commandes.create({ 
-                            utilisateur: this.$strapi.user.id,
-                            fourmis: fourmisIds,
-                            quantite: JSON.stringify(quantite),
-                            prixTotal: this.cartTotalPrice
-                        });
-                    } catch (error) {
-                        console.info(error.message);
-                    }
-
-                    this.$router.push('/');
-                    this.$store.dispatch('transactionCompleted', details.payer);
-
-                    console.info(details);
-                    console.info(this.$store.state.payer);
-                });
-            }
-        }).render(this.$refs.paypal);
-
-        this.$store.commit('isPaypalButtonLoaded', true);
     },
   },
 };

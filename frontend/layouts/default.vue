@@ -19,15 +19,19 @@
 
         <v-snackbar
           v-model="snackbar"
+          centered
+          timeout="2000"
+          color="deep-purple accent-4"
+          elevation="24"
         >
           {{ textSnackbar }}
 
           <template v-slot:action="{ attrs }">
             <v-btn
-              color="pink"
-              text
-              v-bind="attrs"
-              @click="snackbar = false"
+                color="pink"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
             >
               Fermer
             </v-btn>

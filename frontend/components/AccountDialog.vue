@@ -36,11 +36,8 @@
                 <v-card-text v-if="activeTab == 2" class="login-dialog-text mt-16">
                     <DeliveryInfosForm />
                 </v-card-text>
-                <v-card-text v-if="activeTab == 3 && !showCommand" class="login-dialog-text mt-16">
-                    <MyCommands v-if="!showCommand" @displayCommand="displayCommand" />
-                </v-card-text>
-                <v-card-text v-if="activeTab == 3 && showCommand" class="login-dialog-text mt-16">
-                    <Command v-if="showCommand" :command="command" @displayMyCommands="showCommand = false" />
+                <v-card-text v-if="activeTab == 3" class="login-dialog-text mt-16">
+                    <MyCommands />
                 </v-card-text>
 
                 <v-card-actions>
@@ -66,10 +63,9 @@
 import AccountInfosForm from './AccountInfosForm'
 import DeliveryInfosForm from './DeliveryInfosForm'
 import MyCommands from './MyCommands'
-import Command from './Command'
 
 export default {
-  components: { AccountInfosForm, DeliveryInfosForm, MyCommands, Command },
+  components: { AccountInfosForm, DeliveryInfosForm, MyCommands },
   props: {
     dialog: Boolean,
     isUserLogged: Boolean,
@@ -78,7 +74,6 @@ export default {
     return {
         activeTab: 1,
         singleCommand: {},
-        showCommand: false,
     };
   },
   computed: {
@@ -94,10 +89,6 @@ export default {
   methods: {
     closeDialog() {
         this.$emit('onClose');
-    },
-    displayCommand(command) {
-        this.command = command;
-        this.showCommand = true;
     },
   },
 };

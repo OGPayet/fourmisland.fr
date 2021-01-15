@@ -4,7 +4,7 @@
     {{ error }}
   </div>
   <ProductsHeader v-if="!error" />
-  <v-card class="product-card mx-auto mt-5 pb-12" max-width="1300px" elevation="1" outlined>
+  <v-card class="product-card mx-auto mt-5" max-width="1300px" elevation="1" outlined>
     <v-container v-if="!error" class="product-container">
       <v-row v-if="isDataLoaded == false" no-gutters>
         <v-col 
@@ -21,9 +21,9 @@
           ></v-skeleton-loader>
         </v-col>
       </v-row>
-      <v-row v-else no-gutters>
+      <v-row no-gutters>
         <v-col
-          v-for="product in products"
+          v-for="product in productsByPage"
           :key="product.id"
           class="mt-12"
           cols="12"
@@ -70,12 +70,20 @@
               </v-card-subtitle>
 
               <v-card-subtitle class="product-subtitle">
-                {{ product.description_courte.slice(0, 90) }}<span v-if="product.description_courte.length > 90">...</span>
+                {{ product.description_courte.slice(0, 89) }}<span v-if="product.description_courte.length > 89">...</span>
               </v-card-subtitle>
             </nuxt-link>
           </v-card>
         </v-col>
       </v-row>
+
+      <div v-if="products.length > 9" class="text-center mt-10">
+        <v-pagination
+          v-model="page"
+          :length="Math.ceil(products.length / 9)"
+          :total-visible="7"
+        ></v-pagination>
+      </div>
     </v-container>
   </v-card>
 </div>
@@ -91,18 +99,30 @@ export default {
   components: { ProductsHeader },
   props: {
     products: Array,
+    isFilteredProducts: Boolean,
     error: Error,
     isDataLoaded: Boolean,
   },
   data() {
     return {
+      page: 1,
     };
+  },
+  computed: {
+    productsByPage() {
+      return this.products.filter(product => {
+        return this.isFilteredProducts ? true : product.page == this.page;
+      });
+    },
   },
   methods: {
     getStrapiMedia,
     isInStock(product) {
       return product.stock > 0 ? true : false;
     },
+  },
+  mounted() {
+    console.info(this.products);
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
     <div id="my-commands">
+        <h2 class="command-title mb-7">Commande du {{ $moment(command.created_at).format('LL') }} :</h2>
         <v-list three-line>
             <template v-for="(product, index) in commandProducts">
                 <v-card v-if="page == product.page" class="mb-5 ml-10 mr-10" outlined :key="index">
@@ -30,7 +31,7 @@
             ></v-pagination>
         </div>
 
-        <v-btn color="#e8eae6" @click="$emit('displayMyCommands')">
+        <v-btn class="mt-4" color="success" large @click="$emit('displayMyCommands')">
             Retour aux commandes
         </v-btn>
     </div>
@@ -52,9 +53,9 @@ export default {
     commandProducts() {
         let page = 1;
         let products = [];
-        command.fourmis.forEach((fourmis, index) => {
+        this.command.fourmis.forEach((fourmis, index) => {
             let quantity;
-            JSON.parse(command.quantity).forEach(element => {
+            JSON.parse(this.command.quantite).forEach(element => {
                 element.nom == fourmis.nom ? quantity = element.quantite : '';
             });
 

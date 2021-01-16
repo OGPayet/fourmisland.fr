@@ -82,12 +82,11 @@ export default {
   ],
 
   proxy: {
-    '/paypal': {
-      target: 'https://www.paypal.com/sdk/js?client-id=AVa3-CT9E7DbWV9LbdelsT0Mn_sw21l2lZJ6dMZ_Z6vF6RsAuuhOmpMbN_bSU4-f-tyF7kuFp6Pojr75',
+    '/api/strapi': {
+      target: 'http://localhost:1337',
       pathRewrite: {
-        '^/paypal' : '/'
-      },
-      changeOrigin: true
+        '^/api/strapi' : '/'
+      }
     }
   },
 
@@ -96,7 +95,7 @@ export default {
   },
 
   strapi: {
-    url: process.env.API_URL || "http://localhost:1337",
+    url: process.env.API_URL || "/api/strapi",
     entities: [
       'users',
       'commandes',
@@ -105,7 +104,7 @@ export default {
   },
 
   env: {
-    storeUrl: process.env.STORE_URL || "http://localhost:1337"
+    storeUrl: process.env.STORE_URL || "/api/strapi"
   },
 
   optimizedImages: {

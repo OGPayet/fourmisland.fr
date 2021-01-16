@@ -74,7 +74,8 @@ export default {
         ],
         emailAlreadyTaken: false,
         usernameAlreadyTaken: false,
-        successRegisterTextSnackbar: 'Compte créé avec succès ! Vous êtes maintenant connecté.',
+        successRegisterTextSnackbar: 'Compte créé avec succès ! Un e-mail de confirmation vous a été envoyé.',
+        error: null,
     };
   },
   computed: {
@@ -103,19 +104,31 @@ export default {
     },
     async register() {
         this.$refs.form.validate();
+
         try {
             await this.$strapi.register({ email: this.email, username: this.username, password: this.password });
-            this.$store.commit('isUserLogged', true);
-            this.$emit('closeDialog');
-            this.$emit('successRegister', this.successRegisterTextSnackbar);
         } catch (error) {
-            if (error.message == 'Email is already taken.') {
+            this.error = error;
+            console.info(this.error.message);
+            if (this.error.message == 'Email is already taken.') {
                 this.isEmailAlreadyTaken = true;
                 this.email = '';
-            } else if (error.message == 'Username already taken') {
+            } else if (this.error.message == 'Username already taken') {
                 this.isUsernameAlreadyTaken = true;
                 this.username = '';
             }
+        }
+
+        if (this.error == null) {
+            this.$emit('closeDialog');
+            this.$emit('successRegister', this.successRegisterTextSnackbar);
+            /*
+            try {
+                await this.$strapi.sendEmailConfirmation({ email: this.email });
+            } catch (error) {
+                this.error = error;
+                console.info(this.error.message);
+            }*/
         }
     },
   },

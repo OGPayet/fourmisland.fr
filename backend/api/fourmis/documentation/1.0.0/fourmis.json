@@ -1,0 +1,872 @@
+{
+  "paths": {
+    "/fourmis": {
+      "get": {
+        "deprecated": false,
+        "description": "Find all the fourmis's records",
+        "responses": {
+          "200": {
+            "description": "Retrieve fourmis document(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Fourmis"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Fourmis"
+        ],
+        "parameters": [
+          {
+            "name": "_limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of results possible",
+            "schema": {
+              "type": "integer"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "required": false,
+            "description": "Sort according to a specific field.",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_start",
+            "in": "query",
+            "required": false,
+            "description": "Skip a specific number of entries (especially useful for pagination)",
+            "schema": {
+              "type": "integer"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "=",
+            "in": "query",
+            "required": false,
+            "description": "Get entries that matches exactly your input",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_ne",
+            "in": "query",
+            "required": false,
+            "description": "Get records that are not equals to something",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_lt",
+            "in": "query",
+            "required": false,
+            "description": "Get record that are lower than a value",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_lte",
+            "in": "query",
+            "required": false,
+            "description": "Get records that are lower than or equal to a value",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_gt",
+            "in": "query",
+            "required": false,
+            "description": "Get records that are greater than a value",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_gte",
+            "in": "query",
+            "required": false,
+            "description": "Get records that are greater than  or equal a value",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_contains",
+            "in": "query",
+            "required": false,
+            "description": "Get records that contains a value",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_containss",
+            "in": "query",
+            "required": false,
+            "description": "Get records that contains (case sensitive) a value",
+            "schema": {
+              "type": "string"
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_in",
+            "in": "query",
+            "required": false,
+            "description": "Get records that matches any value in the array of values",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "deprecated": false
+          },
+          {
+            "name": "_nin",
+            "in": "query",
+            "required": false,
+            "description": "Get records that doesn't match any value in the array of values",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "deprecated": false
+          }
+        ]
+      },
+      "post": {
+        "deprecated": false,
+        "description": "Create a new fourmis record",
+        "responses": {
+          "200": {
+            "description": "Retrieve fourmis document(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fourmis"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Fourmis"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewFourmis"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fourmis/count": {
+      "get": {
+        "deprecated": false,
+        "description": "Retrieve the numver of fourmis documents",
+        "responses": {
+          "200": {
+            "description": "Retrieve fourmis document(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Fourmis"
+        ],
+        "parameters": []
+      }
+    },
+    "/fourmis/{slug}": {
+      "get": {
+        "deprecated": false,
+        "description": "Find one fourmis record",
+        "responses": {
+          "200": {
+            "description": "Retrieve fourmis document(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fourmis"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Fourmis"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/fourmis/{id}": {
+      "put": {
+        "deprecated": false,
+        "description": "Update a single fourmis record",
+        "responses": {
+          "200": {
+            "description": "Retrieve fourmis document(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Fourmis"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Fourmis"
+        ],
+        "requestBody": {
+          "description": "",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewFourmis"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "deprecated": false,
+        "description": "Delete a single fourmis record",
+        "responses": {
+          "200": {
+            "description": "deletes a single fourmis based on the ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Fourmis"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Fourmis": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "famille": {
+            "type": "string"
+          },
+          "sous_famille": {
+            "type": "string"
+          },
+          "tribu": {
+            "type": "string"
+          },
+          "genre": {
+            "type": "string"
+          },
+          "espece": {
+            "type": "string"
+          },
+          "taxonomiste_et_annee_de_description": {
+            "type": "string"
+          },
+          "noms_vernaculaires": {
+            "type": "string"
+          },
+          "synonymes_et_anciens_noms_utilises": {
+            "type": "string"
+          },
+          "etymologie_genre": {
+            "type": "string"
+          },
+          "etymologie_espece": {
+            "type": "string"
+          },
+          "taille": {
+            "type": "string"
+          },
+          "morphisme": {
+            "type": "string"
+          },
+          "confusions_possibles": {
+            "type": "string"
+          },
+          "description_et_particularites_physiques": {
+            "type": "string"
+          },
+          "description_du_biotope": {
+            "type": "string"
+          },
+          "nidification": {
+            "type": "string"
+          },
+          "demographie": {
+            "type": "string"
+          },
+          "particularites_comportementales": {
+            "type": "string"
+          },
+          "alimentation": {
+            "type": "string"
+          },
+          "essaimage": {
+            "type": "string"
+          },
+          "gynie": {
+            "type": "string"
+          },
+          "fondation": {
+            "type": "string"
+          },
+          "cycle_de_developpement": {
+            "type": "string"
+          },
+          "repartition": {
+            "type": "string"
+          },
+          "temperature_de_maintien": {
+            "type": "string"
+          },
+          "set_up": {
+            "type": "string"
+          },
+          "hygrometrie": {
+            "type": "string"
+          },
+          "diapause": {
+            "type": "string"
+          },
+          "alimentation_en_elevage": {
+            "type": "string"
+          },
+          "elevage_fondation": {
+            "type": "string"
+          },
+          "details_a_ajouter": {
+            "type": "string"
+          },
+          "difficulte_elevage": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "required": [
+                "id",
+                "name",
+                "hash",
+                "mime",
+                "size",
+                "url",
+                "provider"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "alternativeText": {
+                  "type": "string"
+                },
+                "caption": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "formats": {
+                  "type": "object"
+                },
+                "hash": {
+                  "type": "string"
+                },
+                "ext": {
+                  "type": "string"
+                },
+                "mime": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "number"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "previewUrl": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "provider_metadata": {
+                  "type": "object"
+                },
+                "related": {
+                  "type": "string"
+                },
+                "created_by": {
+                  "type": "string"
+                },
+                "updated_by": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "prix": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "integer"
+          },
+          "description_courte": {
+            "type": "string"
+          },
+          "foreuse": {
+            "type": "string",
+            "enum": [
+              "Oui",
+              "Non"
+            ]
+          },
+          "slug": {
+            "type": "uid"
+          },
+          "difficulte": {
+            "type": "string"
+          },
+          "espece_cryptique": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NewFourmis": {
+        "properties": {
+          "nom": {
+            "type": "string"
+          },
+          "famille": {
+            "type": "string"
+          },
+          "sous_famille": {
+            "type": "string"
+          },
+          "tribu": {
+            "type": "string"
+          },
+          "genre": {
+            "type": "string"
+          },
+          "espece": {
+            "type": "string"
+          },
+          "taxonomiste_et_annee_de_description": {
+            "type": "string"
+          },
+          "noms_vernaculaires": {
+            "type": "string"
+          },
+          "synonymes_et_anciens_noms_utilises": {
+            "type": "string"
+          },
+          "etymologie_genre": {
+            "type": "string"
+          },
+          "etymologie_espece": {
+            "type": "string"
+          },
+          "taille": {
+            "type": "string"
+          },
+          "morphisme": {
+            "type": "string"
+          },
+          "confusions_possibles": {
+            "type": "string"
+          },
+          "description_et_particularites_physiques": {
+            "type": "string"
+          },
+          "description_du_biotope": {
+            "type": "string"
+          },
+          "nidification": {
+            "type": "string"
+          },
+          "demographie": {
+            "type": "string"
+          },
+          "particularites_comportementales": {
+            "type": "string"
+          },
+          "alimentation": {
+            "type": "string"
+          },
+          "essaimage": {
+            "type": "string"
+          },
+          "gynie": {
+            "type": "string"
+          },
+          "fondation": {
+            "type": "string"
+          },
+          "cycle_de_developpement": {
+            "type": "string"
+          },
+          "repartition": {
+            "type": "string"
+          },
+          "temperature_de_maintien": {
+            "type": "string"
+          },
+          "set_up": {
+            "type": "string"
+          },
+          "hygrometrie": {
+            "type": "string"
+          },
+          "diapause": {
+            "type": "string"
+          },
+          "alimentation_en_elevage": {
+            "type": "string"
+          },
+          "elevage_fondation": {
+            "type": "string"
+          },
+          "details_a_ajouter": {
+            "type": "string"
+          },
+          "difficulte_elevage": {
+            "type": "string"
+          },
+          "prix": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "integer"
+          },
+          "description_courte": {
+            "type": "string"
+          },
+          "foreuse": {
+            "type": "string",
+            "enum": [
+              "Oui",
+              "Non"
+            ]
+          },
+          "slug": {
+            "type": "uid"
+          },
+          "difficulte": {
+            "type": "string"
+          },
+          "espece_cryptique": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "updated_by": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Fourmis"
+    }
+  ]
+}

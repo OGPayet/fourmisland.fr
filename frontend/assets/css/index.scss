@@ -15,10 +15,10 @@ a {
 .green-bg {
     background-color: #7c9473;
 }
-.v-tabs-slider-wrapper {
-    margin-left: 100px;
+.v-slide-group__prev {
+    display: none !important;
 }
-.v-tab {
+.v-tab-normal {
     margin-left: 100px;
 }
 .cursor-pointer {

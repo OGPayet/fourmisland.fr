@@ -17,19 +17,19 @@
     </template>
     <v-container class="nav-bar-container">
       <v-row>
-        <v-col cols="6">
-          <v-app-bar-nav-icon class="ml-0">
+        <v-col :cols="logoCols">
+          <v-app-bar-nav-icon>
             <nuxt-link to="/">
               <v-img
                 :src="require('~/assets/img/logo.png')"
-                height="80"
-                width="80"
+                :height="logoHeight"
+                :width="logoWidth"
               ></v-img>
             </nuxt-link>
           </v-app-bar-nav-icon>
         </v-col>
 
-        <v-col cols="5">
+        <v-col v-if="showSearchBar" cols="5">
           <v-text-field
             v-model="searchInput"
             solo
@@ -39,6 +39,9 @@
             background-color="#e8eae6"
             color="black"
           ></v-text-field>
+        </v-col>
+
+        <v-col v-if="!showSearchBar" cols="3">
         </v-col>
 
         <v-col>
@@ -135,10 +138,10 @@
 
     <template v-slot:extension>
       <v-tabs align-with-title>
-        <v-tab>Boutique</v-tab>
-        <v-tab>FAQ</v-tab>
-        <v-tab>À propos</v-tab>
-        <v-tab>Contact</v-tab>
+        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">Boutique</v-tab>
+        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">FAQ</v-tab>
+        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">À propos</v-tab>
+        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">Contact</v-tab>
       </v-tabs>
     </template>
   </v-app-bar>
@@ -173,8 +176,47 @@ export default {
     },
   },
   computed: {
+    breakpointName() {
+      return this.$vuetify.breakpoint.name;
+    },
     isUserLogged() {
       return this.$store.state.isUserLogged;
+    },
+    logoCols() {
+      let cols;
+
+      if (this.breakpointName == 'xs') {
+        cols = 3;
+      } else {
+        cols = 6;
+      }
+
+      return cols;
+    },
+    logoHeight() {
+      let height;
+
+      if (this.breakpointName == 'xs') {
+        height = 60;
+      } else {
+        height = 80;
+      }
+
+      return height;
+    },
+    logoWidth() {
+      let width;
+
+      if (this.breakpointName == 'xs') {
+        width = 60;
+      } else {
+        width = 80;
+      }
+
+      return width;
+    },
+    showSearchBar() {
+      return this.breakpointName != 'xs';
     },
     isTransactionCompleted() {
       return this.$store.state.isTransactionCompleted;

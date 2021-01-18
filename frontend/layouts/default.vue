@@ -2,7 +2,8 @@
 <v-app id="app">
   <v-card class="overflow-hidden">
     <NavBar 
-      @displaySnackbar="launchSnackbar" 
+      :scrollY="scrollY"
+      @displaySnackbar="launchSnackbar"
     />
     <v-sheet
       id="scrolling-techniques-3"
@@ -40,7 +41,6 @@
       </v-main>
 
       <Footer />
-
     </v-sheet>
   </v-card>
 </v-app>
@@ -90,7 +90,7 @@ export default {
     launchSnackbar(value) {
       this.textSnackbar = value;
       this.snackbar = true;
-    }
-  }
+    },
+  },
 }
 </script>

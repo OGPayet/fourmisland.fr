@@ -120,15 +120,15 @@ export default {
         }
 
         if (this.error == null) {
-            this.$emit('closeDialog');
-            this.$emit('successRegister', this.successRegisterTextSnackbar);
-            /*
             try {
                 await this.$strapi.sendEmailConfirmation({ email: this.email });
             } catch (error) {
                 this.error = error;
                 console.info(this.error.message);
-            }*/
+            }
+
+            this.$emit('closeDialog');
+            this.$emit('successRegister', this.successRegisterTextSnackbar);
         }
     },
   },

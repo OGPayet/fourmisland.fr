@@ -29,7 +29,11 @@
           </v-app-bar-nav-icon>
         </v-col>
 
-        <v-col v-if="showSearchBar" cols="5">
+        <v-col 
+          v-if="showSearchBar"
+          v-scroll:#scrolling-techniques-3="displaySearchBar"
+          cols="5"
+        >
           <v-text-field
             v-model="searchInput"
             solo
@@ -51,6 +55,7 @@
               :dot="cartItemNumber > 0 ? false : true"
               :content="cartItemNumber"
             >
+              {{ scrollY }}
               <v-icon
                 large
                 color="#e8eae6"
@@ -139,9 +144,6 @@
     <template v-slot:extension>
       <v-tabs align-with-title>
         <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">Boutique</v-tab>
-        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">FAQ</v-tab>
-        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">À propos</v-tab>
-        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">Contact</v-tab>
       </v-tabs>
     </template>
   </v-app-bar>
@@ -154,6 +156,9 @@ import RegisterDialog from "./RegisterDialog"
 import AccountDialog from "./AccountDialog"
 
 export default {
+  props: {
+    scrollY: Number,
+  },
   components: {
     Cart,
     LoginDialog,
@@ -168,6 +173,7 @@ export default {
       isRegisterDialogOpen: false,
       isAccountDialogOpen: false,
       logoutTextSnackbar: 'Vous êtes maintenant déconnecté.',
+      searchBar: true,
     }
   },
   watch: {
@@ -176,6 +182,14 @@ export default {
     },
   },
   computed: {
+    showSearchBar: {
+      get() {
+        return this.searchBar;
+      },
+      set(value) {
+        this.searchBar = value;
+      }
+    },
     breakpointName() {
       return this.$vuetify.breakpoint.name;
     },
@@ -214,9 +228,6 @@ export default {
       }
 
       return width;
-    },
-    showSearchBar() {
-      return this.breakpointName != 'xs';
     },
     isTransactionCompleted() {
       return this.$store.state.isTransactionCompleted;
@@ -272,6 +283,9 @@ export default {
     },
   },
   methods: {
+    displaySearchBar() {
+      this.showSearchBar = !this.showSearchBar;
+    },
     async logout() {
       try {
         await this.$strapi.logout();

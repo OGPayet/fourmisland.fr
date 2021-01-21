@@ -2,7 +2,6 @@
 <v-app id="app">
   <v-card class="overflow-hidden">
     <NavBar 
-      :scrollY="scrollY"
       @displaySnackbar="launchSnackbar"
     />
     <v-sheet

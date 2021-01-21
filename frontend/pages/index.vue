@@ -17,6 +17,9 @@ export default {
     }
   },
   computed: {
+    isUserLogged() {
+      return this.$store.state.isUserLogged && this.$strapi.user ? true : false;
+    },
     isProductsDataLoaded() {
       return this.products.length > 0 ? true : false;
     },

@@ -54,6 +54,14 @@
 
                         <p v-if="isErrorLogin" class="text-white red lighten-2 mt-2">Adresse e-mail ou mot de passe invalide !</p>
                         <p v-if="isErrorConfirmedEmail" class="text-white red lighten-2 mt-2">Veuillez confirmer votre adresse mail !</p>
+                        <p><v-btn
+                            v-if="isErrorConfirmedEmail && !$store.state.isSendConfirmationEmailClicked"
+                            color="indigo text-white"
+                            class="mr-0"
+                            @click="resendConfirmationMail()"
+                        >
+                            Renvoyer l'email de confirmation
+                        </v-btn></p>
 
                         <v-btn
                             :disabled="!valid"
@@ -107,6 +115,7 @@ export default {
         loginResponse: {},
         errorLogin: false,
         errorConfirmedEmail: false,
+        errorSendConfirmationEmail: false,
         successLoginTextSnackbar: 'Vous êtes maintenant connecté.',
     };
   },
@@ -137,6 +146,18 @@ export default {
     closeDialog() {
         this.$emit('onClose');
         this.resetForm();
+    },
+    async resendConfirmationMail() {
+        try {
+            await this.$strapi.sendEmailConfirmation({ email: this.email });
+        } catch(error) {
+            this.errorSendConfirmationEmail = error;
+            console.info(error.message);
+        }
+
+        if (!this.errorSendConfirmationEmail) {
+            this.$store.commit('isSendConfirmationEmailClicked', true);
+        }
     },
     async connection () {
         this.$refs.form.validate();

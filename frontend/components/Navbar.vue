@@ -30,8 +30,6 @@
         </v-col>
 
         <v-col 
-          v-if="showSearchBar"
-          v-scroll:#scrolling-techniques-3="displaySearchBar"
           cols="5"
         >
           <v-text-field
@@ -45,9 +43,6 @@
           ></v-text-field>
         </v-col>
 
-        <v-col v-if="!showSearchBar" cols="3">
-        </v-col>
-
         <v-col>
           <v-btn class="float-right" icon @click="cartDialog = true">
             <v-badge
@@ -55,7 +50,6 @@
               :dot="cartItemNumber > 0 ? false : true"
               :content="cartItemNumber"
             >
-              {{ scrollY }}
               <v-icon
                 large
                 color="#e8eae6"
@@ -68,13 +62,15 @@
         <v-col>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn class="float-right" icon v-bind="attrs" v-on="on">
+              <v-btn class="account-button float-right" v-bind="attrs" v-on="on">
                 <v-icon
+                  left
                   large
                   color="#e8eae6"
                 >
                     mdi-account
                 </v-icon>
+                <span v-if="isUserLogged" class="ml-2">{{ $strapi.user.username }}</span>
               </v-btn>
             </template>
             <v-list class="mt-2">
@@ -143,7 +139,7 @@
 
     <template v-slot:extension>
       <v-tabs align-with-title>
-        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'">Boutique</v-tab>
+        <v-tab :class="breakpointName == 'xs' ? 'v-tab-mobile' : 'v-tab-normal'"><nuxt-link to="/">Boutique</nuxt-link></v-tab>
       </v-tabs>
     </template>
   </v-app-bar>
@@ -156,9 +152,7 @@ import RegisterDialog from "./RegisterDialog"
 import AccountDialog from "./AccountDialog"
 
 export default {
-  props: {
-    scrollY: Number,
-  },
+  props: {},
   components: {
     Cart,
     LoginDialog,
@@ -173,7 +167,6 @@ export default {
       isRegisterDialogOpen: false,
       isAccountDialogOpen: false,
       logoutTextSnackbar: 'Vous êtes maintenant déconnecté.',
-      searchBar: true,
     }
   },
   watch: {
@@ -182,19 +175,11 @@ export default {
     },
   },
   computed: {
-    showSearchBar: {
-      get() {
-        return this.searchBar;
-      },
-      set(value) {
-        this.searchBar = value;
-      }
-    },
     breakpointName() {
       return this.$vuetify.breakpoint.name;
     },
     isUserLogged() {
-      return this.$store.state.isUserLogged;
+      return this.$store.state.isUserLogged && this.$strapi.user ? true : false;
     },
     logoCols() {
       let cols;
@@ -202,7 +187,7 @@ export default {
       if (this.breakpointName == 'xs') {
         cols = 3;
       } else {
-        cols = 6;
+        cols = 5;
       }
 
       return cols;
@@ -283,9 +268,6 @@ export default {
     },
   },
   methods: {
-    displaySearchBar() {
-      this.showSearchBar = !this.showSearchBar;
-    },
     async logout() {
       try {
         await this.$strapi.logout();

@@ -8,6 +8,7 @@ export const state = () => ({
     payer: {},
     isUserLogged: false,
     commands: [],
+    isSendConfirmationEmailClicked: false,
 })
   
 export const mutations = {
@@ -59,6 +60,9 @@ export const mutations = {
     },
     setCommands(state, commands) {
         state.commands = commands;
+    },
+    isSendConfirmationEmailClicked(state, value) {
+        state.isSendConfirmationEmailClicked = value;
     },
 }
 

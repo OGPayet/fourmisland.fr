@@ -95,7 +95,7 @@ export default {
           v => /.+@.+\..+/.test(v) || "L'adresse email doit être valide",
       ],
       errorForgotPassword: null,
-      mailSend: true,
+      mailSend: false,
     };
   },
   methods: {

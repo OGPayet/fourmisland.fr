@@ -51,11 +51,15 @@
                             outlined
                             required
                         ></v-text-field>
+                        <v-btn class="float-right" text color="primary" @click="forgotPassword()">
+                            Mot de passe oublié ?
+                        </v-btn>
 
                         <p v-if="isErrorLogin" class="text-white red lighten-2 mt-2">Adresse e-mail ou mot de passe invalide !</p>
                         <p v-if="isErrorConfirmedEmail" class="text-white red lighten-2 mt-2">Veuillez confirmer votre adresse mail !</p>
                         <p><v-btn
                             v-if="isErrorConfirmedEmail && !$store.state.isSendConfirmationEmailClicked"
+                            :disabled="$store.state.isSendConfirmationEmailClicked"
                             color="indigo text-white"
                             class="mr-0"
                             @click="resendConfirmationMail()"
@@ -115,6 +119,7 @@ export default {
         loginResponse: {},
         errorLogin: false,
         errorConfirmedEmail: false,
+        errorForgotPassword: null,
         errorSendConfirmationEmail: false,
         successLoginTextSnackbar: 'Vous êtes maintenant connecté.',
     };
@@ -147,6 +152,10 @@ export default {
         this.$emit('onClose');
         this.resetForm();
     },
+    forgotPassword() {
+        this.closeDialog();
+        this.$emit('forgotPassword');
+    },
     async resendConfirmationMail() {
         try {
             await this.$strapi.sendEmailConfirmation({ email: this.email });
@@ -160,24 +169,25 @@ export default {
         }
     },
     async connection () {
-        this.$refs.form.validate();
-        try {
-            this.loginResponse = await this.$strapi.login({ identifier: this.email, password: this.password });
-            if (this.loginResponse.jwt != undefined) {
-                this.closeDialog();
-                this.$emit('successLogin', this.successLoginTextSnackbar);
-                this.$store.commit('isUserLogged', true);
-            }
-        } catch(error) {
-            console.info(error.message);
-            if (error.message == 'Please provide your username or your e-mail.' || error.message == 'Identifier or password invalid.') {
-                this.isErrorLogin = true;
-                this.email = '';
-                this.password = '';
-            } else if (error.message == 'Your account email is not confirmed') {
-                this.isErrorConfirmedEmail = true;
-            }
-        }   
+        if (this.$refs.form.validate()) {
+            try {
+                this.loginResponse = await this.$strapi.login({ identifier: this.email, password: this.password });
+                if (this.loginResponse.jwt != undefined) {
+                    this.closeDialog();
+                    this.$emit('successLogin', this.successLoginTextSnackbar);
+                    this.$store.commit('isUserLogged', true);
+                }
+            } catch(error) {
+                console.info(error.message);
+                if (error.message == 'Please provide your username or your e-mail.' || error.message == 'Identifier or password invalid.') {
+                    this.isErrorLogin = true;
+                    this.email = '';
+                    this.password = '';
+                } else if (error.message == 'Your account email is not confirmed') {
+                    this.isErrorConfirmedEmail = true;
+                }
+            } 
+        }
     },
   },
 };

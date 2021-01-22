@@ -17,26 +17,7 @@
           :dialog="showTransactionCompletedDialog" 
           @onClose="showTransactionCompletedDialog = false" />
 
-        <v-snackbar
-          v-model="snackbar"
-          centered
-          timeout="2000"
-          color="deep-purple accent-4"
-          elevation="24"
-        >
-          {{ textSnackbar }}
-
-          <template v-slot:action="{ attrs }">
-            <v-btn
-                color="pink"
-                text
-                v-bind="attrs"
-                @click="snackbar = false"
-            >
-              Fermer
-            </v-btn>
-          </template>
-        </v-snackbar>
+        <Snackbar :snackbar="showSnackbar" :textSnackbar="textSnackbar" @displaySnackbar="displaySnackbar" />
       </v-main>
 
       <Footer />
@@ -50,6 +31,7 @@ import NuxtSSRScreenSize from 'nuxt-ssr-screen-size'
 import NavBar from './../components/Navbar'
 import Footer from './../components/Footer'
 import transactionCompletedDialog from './../components/transactionCompletedDialog'
+import Snackbar from '~/components/Snackbar'
 
 export default {
   mixins: [NuxtSSRScreenSize.NuxtSSRScreenSizeMixin],
@@ -57,6 +39,7 @@ export default {
     NavBar,
     Footer,
     transactionCompletedDialog,
+    Snackbar
   },
   data() {
     return {
@@ -65,6 +48,14 @@ export default {
     };
   },
   computed: {
+    showSnackbar: {
+      get() {
+        return this.snackbar;
+      },
+      set(value) {
+        this.snackbar = value;
+      }
+    },
     textSnackbar: {
       get() {
         return this.text;
@@ -88,7 +79,10 @@ export default {
   methods: {
     launchSnackbar(value) {
       this.textSnackbar = value;
-      this.snackbar = true;
+      this.showSnackbar = true;
+    },
+    displaySnackbar(value) {
+      this.showSnackbar = value;
     },
   },
 }

@@ -73,8 +73,6 @@ export default {
             index != 0 ? Number.isInteger(index/4) ? page++ : '' : '';
             commandsList[index].page = page;
         });
-
-        console.info(commandsList);
         
         return commandsList;
     },

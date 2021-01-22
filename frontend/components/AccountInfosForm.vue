@@ -123,31 +123,31 @@ export default {
         this.username = this.userUsername;
     },
     async updateAccountInfos () {
-        this.$refs.form.validate();
+        if (this.$refs.form.validate()) {
+            this.$strapi.user.email = this.email;
+            this.$strapi.user.username = this.username;
 
-        this.$strapi.user.email = this.email;
-        this.$strapi.user.username = this.username;
-
-        let errorUpdate = null;
-        try {
-            await this.$strapi.$users.update(this.$strapi.user.id, this.$strapi.user);
-        } catch (error) {
-            errorUpdate = error;
-            console.info(error.message);
-            if (error.message == 'Email already taken') {
-                this.isEmailAlreadyTaken = true;
-                this.email = '';
-            } else if (error.message == 'username.alreadyTaken.') {
-                this.isUsernameAlreadyTaken = true;
-                this.username = '';
+            let errorUpdate = null;
+            try {
+                await this.$strapi.$users.update(this.$strapi.user.id, this.$strapi.user);
+            } catch (error) {
+                errorUpdate = error;
+                console.info(error.message);
+                if (error.message == 'Email already taken') {
+                    this.isEmailAlreadyTaken = true;
+                    this.email = '';
+                } else if (error.message == 'username.alreadyTaken.') {
+                    this.isUsernameAlreadyTaken = true;
+                    this.username = '';
+                }
             }
-        }
 
-        if (errorUpdate == null) {
-            this.isEmailAlreadyTaken = false;
-            this.isUsernameAlreadyTaken = false;
-            this.textSnackbar = 'Modification sauvegardé avec succès !';
-            this.snackbar = true;
+            if (errorUpdate == null) {
+                this.isEmailAlreadyTaken = false;
+                this.isUsernameAlreadyTaken = false;
+                this.textSnackbar = 'Modification sauvegardé avec succès !';
+                this.snackbar = true;
+            }
         }
     },
   },

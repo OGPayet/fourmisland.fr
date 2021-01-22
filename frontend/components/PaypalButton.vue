@@ -74,9 +74,6 @@ export default {
                     this.$router.push('/');
                     this.$store.dispatch('transactionCompleted', details.payer);
                     this.$emit('transactionCompleted');
-
-                    console.info(details);
-                    console.info(this.$store.state.payer);
                 });
             }
         }).render(this.$refs.paypal);

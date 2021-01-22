@@ -139,25 +139,25 @@ export default {
         this.country = this.userCountry;
     },
     async updateDeliveryInfos () {
-        this.$refs.form.validate();
+        if (this.$refs.form.validate()) {
+            this.$strapi.user.address = this.address;
+            this.$strapi.user.city = this.city;
+            this.$strapi.user.zipCode = this.zipCode;
+            this.$strapi.user.country = this.country;
 
-        this.$strapi.user.address = this.address;
-        this.$strapi.user.city = this.city;
-        this.$strapi.user.zipCode = this.zipCode;
-        this.$strapi.user.country = this.country;
+            let errorUpdate = null;
+            try {
+                await this.$strapi.$users.update(this.$strapi.user.id, this.$strapi.user);
+            } catch (error) {
+                errorUpdate = error;
+                console.info(error.message);
+            }
 
-        let errorUpdate = null;
-        try {
-            await this.$strapi.$users.update(this.$strapi.user.id, this.$strapi.user);
-        } catch (error) {
-            errorUpdate = error;
-            console.info(error.message);
-        }
-
-        if (errorUpdate == null) {
-            this.$emit('deliveryInfosUpdateSuccess');
-            this.textSnackbar = 'Modification sauvegardé avec succès !';
-            this.snackbar = true;
+            if (errorUpdate == null) {
+                this.$emit('deliveryInfosUpdateSuccess');
+                this.textSnackbar = 'Modification sauvegardé avec succès !';
+                this.snackbar = true;
+            }
         }
     },
   },

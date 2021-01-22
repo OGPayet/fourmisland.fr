@@ -121,9 +121,6 @@ export default {
       return product.stock > 0 ? true : false;
     },
   },
-  mounted() {
-    console.info(this.products);
-  }
 }
 </script>
 

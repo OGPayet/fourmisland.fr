@@ -103,25 +103,25 @@ export default {
         this.isUsernameAlreadyTaken = false;
     },
     async register() {
-        this.$refs.form.validate();
-
-        try {
-            await this.$strapi.register({ email: this.email, username: this.username, password: this.password });
-        } catch (error) {
-            this.error = error;
-            console.info(this.error.message);
-            if (this.error.message == 'Email is already taken.') {
-                this.isEmailAlreadyTaken = true;
-                this.email = '';
-            } else if (this.error.message == 'Username already taken') {
-                this.isUsernameAlreadyTaken = true;
-                this.username = '';
+        if (this.$refs.form.validate()) {
+            try {
+                await this.$strapi.register({ email: this.email, username: this.username, password: this.password });
+            } catch (error) {
+                this.error = error;
+                console.info(this.error.message);
+                if (this.error.message == 'Email is already taken.') {
+                    this.isEmailAlreadyTaken = true;
+                    this.email = '';
+                } else if (this.error.message == 'Username already taken') {
+                    this.isUsernameAlreadyTaken = true;
+                    this.username = '';
+                }
             }
-        }
 
-        if (this.error == null) {
-            this.$emit('closeDialog');
-            this.$emit('successRegister', this.successRegisterTextSnackbar);
+            if (this.error == null) {
+                this.$emit('closeDialog');
+                this.$emit('successRegister', this.successRegisterTextSnackbar);
+            }
         }
     },
   },

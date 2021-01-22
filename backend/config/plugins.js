@@ -1,13 +1,16 @@
 module.exports = ({ env }) => ({
-    email: {
-      provider: 'sendgrid',
-      providerOptions: {
-        apiKey: env('SENDGRID_API_KEY'),
-      },
-      settings: {
-        defaultFrom: 'fourmisland@outlook.com',
-        defaultReplyTo: 'fourmisland@outlook.com',
-      },
+  email: {
+    provider: "mailjet",
+    providerOptions: {
+      publicApiKey: env("MAILJET_PUBLIC_KEY"),
+      secretApiKey: env("MAILJET_SECRET_KEY"),
     },
-  });
+    settings: {
+      defaultFrom: "fourmisland@outlook.com",
+      defaultFromName: "FourmisLand",
+      defaultTo: "fourmisland@outlook.com",
+      defaultToName: "FourmisLand",
+    },
+  },
+});
   

@@ -118,6 +118,13 @@
       :isUserLogged="isUserLogged" 
       @onClose="loginDialog = false" 
       @successLogin="emitTextSnackbar"
+      @forgotPassword="forgotPasswordDialog = true"
+    />
+    <ForgotPasswordDialog
+      v-if="!isUserLogged"
+      :dialog="forgotPasswordDialog"
+      :isUserLogged="isUserLogged"
+      @onClose="forgotPasswordDialog = false" 
     />
     <RegisterDialog 
       v-if="!isUserLogged" 
@@ -150,6 +157,7 @@ import Cart from "./Cart"
 import LoginDialog from "./LoginDialog"
 import RegisterDialog from "./RegisterDialog"
 import AccountDialog from "./AccountDialog"
+import ForgotPasswordDialog from "./ForgotPasswordDialog"
 
 export default {
   props: {},
@@ -158,12 +166,14 @@ export default {
     LoginDialog,
     RegisterDialog,
     AccountDialog,
+    ForgotPasswordDialog
   },
   data() {
     return {
       searchValue: null,
       isCartDialogOpen: false,
       isLoginDialogOpen: false,
+      isForgotPasswordDialogOpen: false,
       isRegisterDialogOpen: false,
       isAccountDialogOpen: false,
       logoutTextSnackbar: 'Vous êtes maintenant déconnecté.',
@@ -223,6 +233,14 @@ export default {
       },
       set(value) {
         this.isLoginDialogOpen = value;
+      }
+    },
+    forgotPasswordDialog: {
+      get() {
+        return this.isForgotPasswordDialogOpen;
+      },
+      set(value) {
+        this.isForgotPasswordDialogOpen = value;
       }
     },
     registerDialog: {

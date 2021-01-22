@@ -75,7 +75,6 @@ export default {
             products.push(product);
         });
 
-        console.info(products);
         return products;
     },
   },

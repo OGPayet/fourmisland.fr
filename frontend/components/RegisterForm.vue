@@ -119,7 +119,6 @@ export default {
             }
 
             if (this.error == null) {
-                this.$emit('closeDialog');
                 this.$emit('successRegister', this.successRegisterTextSnackbar);
             }
         }

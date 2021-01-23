@@ -23,8 +23,14 @@
                 </v-app-bar>
 
                 <v-card-text v-if="!mailSend" class="login-dialog-text mt-16">
+                    <h2 class="dialog-auth-title font-weight-bold mt-7 ml-4">Mot de passe oublié ?</h2>
+
+                    <p class="dialog-auth-text mt-7 ml-4">Pas de panique ! Indiquez votre adresse e-mail ci-dessous et nous vous enverrons par e-mail les informations pour créer un
+                      nouveau mot de passe.
+                    </p>
+
                     <v-form
-                        class="form ml-4"
+                        class="form ml-4 mt-10"
                         ref="form"
                         v-model="valid"
                         lazy-validation
@@ -56,9 +62,9 @@
                     mdi-checkbox-marked-circle-outline
                   </v-icon>
 
-                  <h2 class="forgot-password-title font-weight-bold mt-7">E-mail de réinitialisation de mot de passe envoyé</h2>
+                  <h2 class="dialog-auth-title font-weight-bold mt-7">E-mail de réinitialisation de mot de passe envoyé</h2>
 
-                  <p class="forgot-password-text mt-7">Un e-mail a été envoyé à votre adresse. Suivez les instructions fournies pour réinitialiser votre mot de passe.</p>
+                  <p class="dialog-auth-text mt-7">Un e-mail a été envoyé à votre adresse. Suivez les instructions fournies pour réinitialiser votre mot de passe.</p>
                 </v-card-text>
 
                 <v-card-actions>

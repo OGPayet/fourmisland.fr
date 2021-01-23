@@ -55,8 +55,8 @@
                             Mot de passe oublié ?
                         </v-btn>
 
-                        <p v-if="isErrorLogin" class="text-white red lighten-2 mt-2">Adresse e-mail ou mot de passe invalide !</p>
-                        <p v-if="isErrorConfirmedEmail" class="text-white red lighten-2 mt-2">Veuillez confirmer votre adresse mail !</p>
+                        <p v-if="isErrorLogin" class="text-white red lighten-2 mt-12">Adresse e-mail ou mot de passe invalide !</p>
+                        <p v-if="isErrorConfirmedEmail" class="text-white red lighten-2 mt-12">Veuillez confirmer votre adresse mail !</p>
                         <p><v-btn
                             v-if="isErrorConfirmedEmail && !$store.state.isSendConfirmationEmailClicked"
                             :disabled="$store.state.isSendConfirmationEmailClicked"

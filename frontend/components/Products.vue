@@ -82,6 +82,7 @@
           v-model="page"
           :length="Math.ceil(products.length / 9)"
           :total-visible="7"
+          color="#7c9473"
         ></v-pagination>
       </div>
     </v-container>

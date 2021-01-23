@@ -39,6 +39,12 @@ a {
 .form {
     width: 50%;
 }
+.dialog-auth-title {
+    font-size: 27px;
+}
+.dialog-auth-text {
+    font-size: 18px;
+}
 
 // NavBar
 .nav-bar-container {
@@ -179,14 +185,6 @@ a {
     font-size: 28px;
     font-weight: bold;
     color: black;
-}
-
-// ForgotPasswordDialog
-.forgot-password-title {
-    font-size: 27px;
-}
-.forgot-password-text {
-    font-size: 18px;
 }
 
 // Footer

@@ -22,8 +22,17 @@
                     </v-toolbar-title>
                 </v-app-bar>
 
-                <v-card-text class="login-dialog-text mt-16">
+                <v-card-text v-if="!registerDone" class="login-dialog-text mt-16">
                     <RegisterForm @successRegister="successRegister" @closeDialog="closeDialog" />
+                </v-card-text>
+                <v-card-text v-else class="login-dialog-text text-center mt-10">
+                  <v-icon size="200" color="green">
+                    mdi-checkbox-marked-circle-outline
+                  </v-icon>
+
+                  <h2 class="dialog-auth-title font-weight-bold mt-7">Compte créé avec succès ! Un e-mail de confirmation vous a été envoyé.</h2>
+
+                  <p class="dialog-auth-text mt-7">Un e-mail a été envoyé à votre adresse. Veillez cliquez sur le lien indiqué dans l'e-mail pour valider votre compte.</p>
                 </v-card-text>
 
                 <v-card-actions>
@@ -55,14 +64,16 @@ export default {
     isUserLogged: Boolean,
   },
   data() {
-    return {};
+    return {
+        registerDone: false,
+    };
   },
   methods: {
     closeDialog() {
         this.$emit('onClose');
     },
     successRegister(snackbarText) {
-        this.$emit('successRegister', snackbarText);
+        this.registerDone = true;
     }
   },
 };

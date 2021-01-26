@@ -30,9 +30,10 @@
         </v-col>
 
         <v-col 
-          cols="5"
+          :cols="searchBarCols"
         >
           <v-text-field
+            v-if="breakpointName != 'xs'"
             v-model="searchInput"
             solo
             light
@@ -41,9 +42,21 @@
             background-color="#e8eae6"
             color="black"
           ></v-text-field>
+          <v-btn 
+            v-else
+            icon 
+            @click="searchBarDialog = true"
+          >
+            <v-icon
+              large
+              color="#e8eae6"
+            >
+              mdi-magnify
+            </v-icon>
+          </v-btn>
         </v-col>
 
-        <v-col>
+        <v-col :cols="cartCols">
           <v-btn class="float-right" icon @click="cartDialog = true">
             <v-badge
               color="blue"
@@ -59,7 +72,7 @@
             </v-badge>
           </v-btn>
         </v-col>
-        <v-col>
+        <v-col :cols="accountCols">
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn class="account-button float-right" v-bind="attrs" v-on="on">
@@ -111,6 +124,43 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-dialog
+      v-model="searchBarDialog"
+      max-width="1200"
+      @click:outside="closeSearchBarDialog()"
+    >
+      <v-card>
+        <v-card-text>
+          <v-text-field
+            v-model="searchInput"
+            class="pt-10"
+            solo
+            light
+            label="Rechercher"
+            prepend-inner-icon="mdi-magnify"
+            background-color="#e8eae6"
+            color="black"
+            height="60px"
+          ></v-text-field>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            class="cart-return-button"
+            color="#7c9473"
+            @click="closeSearchBarDialog()"
+          >
+            <v-icon class="mr-2">
+              mdi-magnify
+            </v-icon>
+            Rechercher
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <LoginDialog 
       v-if="!isUserLogged" 
@@ -177,6 +227,7 @@ export default {
       isRegisterDialogOpen: false,
       isAccountDialogOpen: false,
       logoutTextSnackbar: 'Vous êtes maintenant déconnecté.',
+      searchBarDialog: false,
     }
   },
   watch: {
@@ -195,9 +246,42 @@ export default {
       let cols;
 
       if (this.breakpointName == 'xs') {
-        cols = 3;
+        cols = 5;
       } else {
         cols = 5;
+      }
+
+      return cols;
+    },
+    searchBarCols() {
+      let cols;
+
+      if (this.breakpointName == 'xs') {
+        cols = 2;
+      } else {
+        cols = 5;
+      }
+
+      return cols;
+    },
+    cartCols() {
+      let cols;
+
+      if (this.breakpointName == 'xs') {
+        cols = 3;
+      } else {
+        cols = 1;
+      }
+
+      return cols;
+    },
+    accountCols() {
+      let cols;
+
+      if (this.breakpointName == 'xs') {
+        cols = 2;
+      } else {
+        cols = 1;
       }
 
       return cols;
@@ -297,7 +381,10 @@ export default {
     },
     emitTextSnackbar(textSnackbar) {
       this.$emit('displaySnackbar', textSnackbar);
-    }
+    },
+    closeSearchBarDialog() {
+      this.searchBarDialog = false;
+    },
   },
 };
 </script>

@@ -100,6 +100,12 @@ a {
     background-color: #fafafa !important;
     max-width: 1300px !important;
 }
+.products-header-card-mobile {
+    background-color: #fafafa !important;
+    max-width: 1300px !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
 
 // Product page
 .product-page-title {
@@ -147,22 +153,46 @@ a {
 .cart-title {
     font-size: 30px !important;
     color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    cursor: default !important;
+}
+.cart-title-mobile {
+    font-size: 24px !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    cursor: default !important;
 }
 .cart-list-item-title {
     font-size: 25px !important;
+}
+.cart-list-item-title-mobile {
+    font-size: 18px !important;
 }
 .cart-list-item-price {
     font-size: 22px !important;
     margin-right: 20%;
 }
+.cart-list-item-price-mobile {
+    font-size: 18px !important;
+}
 .cart-list-item-quantity {
     font-size: 20px !important;
+}
+.cart-list-item-quantity-mobile {
+    font-size: 17px !important;
 }
 .cart-total-price {
     font-size: 30px;
     color: black;
 }
+.cart-total-price-mobile {
+    font-size: 24px;
+    color: black;
+}
 .cart-return-button {
+    color: white !important;
+}
+.cart-return-button-mobile {
     color: white !important;
 }
 .cart-card-text-payment-steps {

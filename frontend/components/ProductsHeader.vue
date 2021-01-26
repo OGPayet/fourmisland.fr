@@ -1,12 +1,12 @@
 <template>
   <v-card 
-    class="mx-auto products-header-card" 
+    :class="breakpointName != 'xs' ? 'mx-auto products-header-card' : 'products-header-card-mobile'" 
     :elevation="elevation" 
     outlined 
     @mouseover="elevation = 3" 
     @mouseout="elevation = 1"
   >
-    <v-card-title>Fourmis</v-card-title>
+    <v-card-title>Nos Fourmis</v-card-title>
 
     <v-card-text>
       Des fourmis élevées et récoltées de manière éthique, sur un prélèvement raisonné local
@@ -22,6 +22,11 @@ export default {
     return {
       elevation: 1,
     };
+  },
+  computed: {
+    breakpointName() {
+      return this.$vuetify.breakpoint.name;
+    },
   },
 };
 </script>

@@ -111,7 +111,7 @@
                     </h4>
                 </v-card-text>
 
-                <div v-if="breakpointName == 'xs'">
+                <div v-if="breakpointName == 'xs'" class="ml-4 mr-4 mt-4">
                     <v-btn
                         v-if="!isCartEmpty"
                         class="cart-return-button-mobile mb-7"
@@ -142,7 +142,7 @@
                 </div>
                 <v-card-actions v-else>
                     <v-spacer></v-spacer>
-
+                    
                     <v-btn
                         v-if="!isCartEmpty"
                         :class="breakpointName != 'xs' ? 'cart-return-button' : 'cart-return-button-mobile'"

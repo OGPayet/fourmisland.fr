@@ -246,7 +246,7 @@ export default {
       let cols;
 
       if (this.breakpointName == 'xs') {
-        cols = 5;
+        cols = 4;
       } else {
         cols = 5;
       }
@@ -279,7 +279,7 @@ export default {
       let cols;
 
       if (this.breakpointName == 'xs') {
-        cols = 2;
+        cols = 3;
       } else {
         cols = 1;
       }

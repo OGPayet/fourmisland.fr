@@ -17,7 +17,7 @@
                             gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
                         ></v-img>
                     </template>
-                    <v-toolbar-title class="cart-title">
+                    <v-toolbar-title :class="breakpointName != 'xs' ? 'cart-title' : 'cart-title-mobile'">
                         Créer votre compte
                     </v-toolbar-title>
                 </v-app-bar>
@@ -75,6 +75,11 @@ export default {
     successRegister(snackbarText) {
         this.registerDone = true;
     }
+  },
+  computed: {
+    breakpointName() {
+      return this.$vuetify.breakpoint.name;
+    },
   },
 };
 </script>
